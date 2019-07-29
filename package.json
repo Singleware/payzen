@@ -1,0 +1,50 @@
+{
+  "author": {
+    "name": "Silas B. Domingos",
+    "email": "hello@balmante.eti.br",
+    "url": "https://balmante.eti.br"
+  },
+  "name": "@singleware/payzen",
+  "description": "Singleware package containing a rest client for the PayZen API.",
+  "license": "MIT",
+  "version": "1.0.14",
+  "main": "release/source/index.js",
+  "types": "release/types/index.d.ts",
+  "keywords": [
+    "payzen",
+    "payment",
+    "gateway",
+    "api client",
+    "rest client"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/singleware/payzen"
+  },
+  "dependencies": {
+    "@singleware/class": "^1.1.19",
+    "@singleware/injection": "^1.0.23",
+    "@singleware/restdb": "^1.3.67"
+  },
+  "devDependencies": {
+    "@singleware/testing": "^1.0.1",
+    "@types/node": "^12.12.30",
+    "prettier": "^1.19.1",
+    "typescript": "^3.8.3"
+  },
+  "prettier": {
+    "printWidth": 140,
+    "tabWidth": 2,
+    "singleQuote": true,
+    "semi": true
+  },
+  "scripts": {
+    "test": "node ./release/tests/suite.js",
+    "build": "npm run clean && npm run make && npm run make-tests",
+    "clean": "rm -rf ./release",
+    "make": "npm run compile-source",
+    "compile-source": "npx tsc -p ./source",
+    "make-tests": "npm run compile-tests-source",
+    "compile-tests-source": "npx tsc -p ./tests"
+  }
+}
