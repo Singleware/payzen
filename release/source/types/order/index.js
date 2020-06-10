@@ -5,5 +5,5 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * This source code is licensed under the MIT License as described in the file LICENSE.
  */
 var mode_1 = require("./mode");
-exports.Mode = mode_1.Mode;
+Object.defineProperty(exports, "Mode", { enumerable: true, get: function () { return mode_1.Mode; } });
 //# sourceMappingURL=index.js.map

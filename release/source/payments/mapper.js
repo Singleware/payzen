@@ -6,6 +6,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Mapper = void 0;
 /*!
  * Copyright (C) 2019 Silas B. Domingos
  * This source code is licensed under the MIT License as described in the file LICENSE.
@@ -13,6 +14,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const Class = require("@singleware/class");
 const Injection = require("@singleware/injection");
 const RestDB = require("@singleware/restdb");
+const Answers = require("../answers");
 const Requests = require("./requests");
 const client_1 = require("../client");
 const entity_1 = require("./entity");
@@ -26,6 +28,7 @@ let Mapper = class Mapper extends RestDB.Mapper {
      */
     constructor(dependencies) {
         super(dependencies.client, entity_1.Entity);
+        this.client = dependencies.client;
     }
     /**
      * Creates a new payment request.
@@ -33,9 +36,26 @@ let Mapper = class Mapper extends RestDB.Mapper {
      * @returns Returns a promise to get the payment Id or undefined when the operation has been failed.
      */
     async create(request) {
-        return await super.insertEx(Requests.Create, request);
+        const id = await super.insertEx(Requests.Create, request);
+        const answer = RestDB.Outputer.createFull(Answers.Payment, this.client.payload.answer, []);
+        if (answer.orderStatus === Answers.Types.Order.Status.Unpaid) {
+            const transaction = answer.transactions[0];
+            if (transaction.detailedErrorMessage) {
+                throw new Error(`${transaction.detailedErrorMessage} (code: ${transaction.detailedErrorCode})`);
+            }
+            else if (transaction.errorMessage) {
+                throw new Error(`${transaction.errorMessage} (code: ${transaction.errorCode})`);
+            }
+            else {
+                throw new Error(`Unknown error.`);
+            }
+        }
+        return id;
     }
 };
+__decorate([
+    Class.Private()
+], Mapper.prototype, "client", void 0);
 __decorate([
     Class.Public()
 ], Mapper.prototype, "create", null);

@@ -43,5 +43,5 @@ export enum Currency {
   USD = 'USD',
   AZN = 'AZN',
   EUR = 'EUR',
-  BRL = 'BRL'
+  BRL = 'BRL',
 }

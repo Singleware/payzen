@@ -5,5 +5,5 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * This source code is licensed under the MIT License as described in the file LICENSE.
  */
 var category_1 = require("./category");
-exports.Category = category_1.Category;
+Object.defineProperty(exports, "Category", { enumerable: true, get: function () { return category_1.Category; } });
 //# sourceMappingURL=index.js.map

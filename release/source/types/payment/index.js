@@ -5,13 +5,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * This source code is licensed under the MIT License as described in the file LICENSE.
  */
 var source_1 = require("./source");
-exports.Source = source_1.Source;
+Object.defineProperty(exports, "Source", { enumerable: true, get: function () { return source_1.Source; } });
 var action_1 = require("./action");
-exports.Action = action_1.Action;
+Object.defineProperty(exports, "Action", { enumerable: true, get: function () { return action_1.Action; } });
 var resolution_1 = require("./resolution");
-exports.Resolution = resolution_1.Resolution;
+Object.defineProperty(exports, "Resolution", { enumerable: true, get: function () { return resolution_1.Resolution; } });
 var document_1 = require("./document");
-exports.Document = document_1.Document;
+Object.defineProperty(exports, "Document", { enumerable: true, get: function () { return document_1.Document; } });
 var method_1 = require("./method");
-exports.Method = method_1.Method;
+Object.defineProperty(exports, "Method", { enumerable: true, get: function () { return method_1.Method; } });
 //# sourceMappingURL=index.js.map

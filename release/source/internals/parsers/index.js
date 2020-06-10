@@ -5,17 +5,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * This source code is licensed under the MIT License as described in the file LICENSE.
  */
 var test_1 = require("./test");
-exports.Test = test_1.Test;
+Object.defineProperty(exports, "Test", { enumerable: true, get: function () { return test_1.Test; } });
 var token_1 = require("./token");
-exports.Token = token_1.Token;
+Object.defineProperty(exports, "Token", { enumerable: true, get: function () { return token_1.Token; } });
 var payment_1 = require("./payment");
-exports.Payment = payment_1.Payment;
+Object.defineProperty(exports, "Payment", { enumerable: true, get: function () { return payment_1.Payment; } });
 var subscription_1 = require("./subscription");
-exports.Subscription = subscription_1.Subscription;
+Object.defineProperty(exports, "Subscription", { enumerable: true, get: function () { return subscription_1.Subscription; } });
 var transaction_1 = require("./transaction");
-exports.Transaction = transaction_1.Transaction;
+Object.defineProperty(exports, "Transaction", { enumerable: true, get: function () { return transaction_1.Transaction; } });
 var order_1 = require("./order");
-exports.Order = order_1.Order;
+Object.defineProperty(exports, "Order", { enumerable: true, get: function () { return order_1.Order; } });
 var common_1 = require("./common");
-exports.Common = common_1.Common;
+Object.defineProperty(exports, "Common", { enumerable: true, get: function () { return common_1.Common; } });
 //# sourceMappingURL=index.js.map

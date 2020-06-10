@@ -5,5 +5,5 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * This source code is licensed under the MIT License as described in the file LICENSE.
  */
 var manual_1 = require("./manual");
-exports.Manual = manual_1.Manual;
+Object.defineProperty(exports, "Manual", { enumerable: true, get: function () { return manual_1.Manual; } });
 //# sourceMappingURL=index.js.map

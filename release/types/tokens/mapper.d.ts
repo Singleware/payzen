@@ -25,7 +25,7 @@ export declare class Mapper extends RestDB.Mapper<Entity> {
      * @param request Token creation request.
      * @returns Returns a promise to get the token Id or undefined when the operation has been failed.
      */
-    create(request: Requests.Create): Promise<string | undefined>;
+    create(request: Requests.Create): Promise<string>;
     /**
      * Creates a new token from a transaction request.
      * @param request Token transaction request.
@@ -39,7 +39,7 @@ export declare class Mapper extends RestDB.Mapper<Entity> {
      */
     cancel(request: Requests.Cancel): Promise<boolean>;
     /**
-     * reactivate the token that corresponds to the specified request.
+     * Reactivate the token that corresponds to the specified request.
      * @param request Token reactivate request.
      * @returns Returns a promise to get true when operation was successful, false otherwise.
      */

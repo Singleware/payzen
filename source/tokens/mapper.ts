@@ -6,6 +6,8 @@ import * as Class from '@singleware/class';
 import * as Injection from '@singleware/injection';
 import * as RestDB from '@singleware/restdb';
 
+import * as Answers from '../answers';
+
 import * as Requests from './requests';
 
 import { Client } from '../client';
@@ -51,8 +53,20 @@ export class Mapper extends RestDB.Mapper<Entity> {
    * @returns Returns a promise to get the token Id or undefined when the operation has been failed.
    */
   @Class.Public()
-  public async create(request: Requests.Create): Promise<string | undefined> {
-    return await super.insertEx(Requests.Create, request);
+  public async create(request: Requests.Create): Promise<string> {
+    const id = await super.insertEx(Requests.Create, request);
+    const answer = RestDB.Outputer.createFull(Answers.Payment, (<RestDB.Entity>this.client.payload).answer, [])!;
+    if (answer.orderStatus === Answers.Types.Order.Status.Unpaid) {
+      const transaction = answer.transactions[0];
+      if (transaction.detailedErrorMessage) {
+        throw new Error(`${transaction.detailedErrorMessage} (code: ${transaction.detailedErrorCode})`);
+      } else if (transaction.errorMessage) {
+        throw new Error(`${transaction.errorMessage} (code: ${transaction.errorCode})`);
+      } else {
+        throw new Error(`Unknown error.`);
+      }
+    }
+    return id;
   }
 
   /**
@@ -76,7 +90,7 @@ export class Mapper extends RestDB.Mapper<Entity> {
   }
 
   /**
-   * reactivate the token that corresponds to the specified request.
+   * Reactivate the token that corresponds to the specified request.
    * @param request Token reactivate request.
    * @returns Returns a promise to get true when operation was successful, false otherwise.
    */

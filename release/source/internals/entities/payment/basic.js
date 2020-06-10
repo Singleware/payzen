@@ -6,6 +6,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Basic = void 0;
 /*!
  * Copyright (C) 2019 Silas B. Domingos
  * This source code is licensed under the MIT License as described in the file LICENSE.
@@ -19,18 +20,18 @@ const Types = require("../../../types");
 let Basic = class Basic extends Class.Null {
 };
 __decorate([
-    RestDB.Schema.Required(),
     RestDB.Schema.String(8, 19),
+    RestDB.Schema.Null(),
     Class.Public()
 ], Basic.prototype, "pan", void 0);
 __decorate([
-    RestDB.Schema.Required(),
     RestDB.Schema.String(2, 2),
+    RestDB.Schema.Null(),
     Class.Public()
 ], Basic.prototype, "expiryMonth", void 0);
 __decorate([
-    RestDB.Schema.Required(),
     RestDB.Schema.String(2, 2),
+    RestDB.Schema.Null(),
     Class.Public()
 ], Basic.prototype, "expiryYear", void 0);
 __decorate([

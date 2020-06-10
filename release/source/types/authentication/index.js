@@ -5,5 +5,5 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * This source code is licensed under the MIT License as described in the file LICENSE.
  */
 var strong_1 = require("./strong");
-exports.Strong = strong_1.Strong;
+Object.defineProperty(exports, "Strong", { enumerable: true, get: function () { return strong_1.Strong; } });
 //# sourceMappingURL=index.js.map

@@ -6,6 +6,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Client = void 0;
 /*!
  * Copyright (C) 2019 Silas B. Domingos
  * This source code is licensed under the MIT License as described in the file LICENSE.
@@ -60,40 +61,49 @@ let Client = class Client extends RestDB.Driver {
             }
             this.payloadData = response.payload;
             if (this.payloadData.status !== 'SUCCESS') {
-                const errorCode = this.payloadData.answer.detailedErrorCode || this.payloadData.answer.errorCode;
-                const errorMessage = this.payloadData.answer.detailedErrorMessage || this.payloadData.answer.errorMessage;
-                throw new Error(`Error: ${errorCode}: ${errorMessage}`);
+                const answer = this.payloadData.answer;
+                if (answer.detailedErrorMessage !== void 0) {
+                    throw new Error(`${answer.detailedErrorCode}: ${answer.detailedErrorMessage}`);
+                }
+                else if (answer.errorMessage !== void 0) {
+                    throw new Error(`${answer.errorCode}: ${answer.errorMessage}`);
+                }
+                else {
+                    throw new Error(`Unknown error.`);
+                }
             }
-            switch (model) {
-                case PaymentRequests.Create:
-                    return Internals.Parsers.Payment.getResponseId(this.payloadData.answer);
-                case SubscriptionRequests.Get:
-                case SubscriptionRequests.Create:
-                    return Internals.Parsers.Subscription.getResponseId(this.payloadData.answer);
-                case TransactionRequests.Get:
-                case TransactionRequests.Cancel:
-                case TransactionRequests.Refund:
-                case TransactionRequests.Rollback:
-                case TransactionRequests.Validate:
-                case TransactionRequests.Update:
-                case TransactionRequests.Duplicate:
-                    return Internals.Parsers.Transaction.getResponseId(this.payloadData.answer);
-                case OrderRequests.Get:
-                    return Internals.Parsers.Order.getResponseId(this.payloadData.answer);
-                case TokenRequests.Get:
-                case TokenRequests.Create:
-                case TokenRequests.Transaction:
-                    return Internals.Parsers.Token.getResponseId(this.payloadData.answer);
-                case TestRequests.Create:
-                    return Internals.Parsers.Test.getResponseValue(this.payloadData.answer);
-                case SubscriptionRequests.Update:
-                case SubscriptionRequests.Cancel:
-                case TransactionRequests.Capture:
-                case TokenRequests.Cancel:
-                case TokenRequests.Reactivate:
-                    return Internals.Parsers.Common.getResponseCode(this.payloadData.answer);
-                default:
-                    throw new Error(`Unsupported request entity.`);
+            else {
+                switch (model) {
+                    case PaymentRequests.Create:
+                        return Internals.Parsers.Payment.getResponseId(this.payloadData.answer);
+                    case SubscriptionRequests.Get:
+                    case SubscriptionRequests.Create:
+                        return Internals.Parsers.Subscription.getResponseId(this.payloadData.answer);
+                    case TransactionRequests.Get:
+                    case TransactionRequests.Cancel:
+                    case TransactionRequests.Refund:
+                    case TransactionRequests.Rollback:
+                    case TransactionRequests.Validate:
+                    case TransactionRequests.Update:
+                    case TransactionRequests.Duplicate:
+                        return Internals.Parsers.Transaction.getResponseId(this.payloadData.answer);
+                    case OrderRequests.Get:
+                        return Internals.Parsers.Order.getResponseId(this.payloadData.answer);
+                    case TokenRequests.Get:
+                    case TokenRequests.Create:
+                    case TokenRequests.Transaction:
+                        return Internals.Parsers.Token.getResponseId(this.payloadData.answer);
+                    case TestRequests.Create:
+                        return Internals.Parsers.Test.getResponseValue(this.payloadData.answer);
+                    case SubscriptionRequests.Update:
+                    case SubscriptionRequests.Cancel:
+                    case TransactionRequests.Capture:
+                    case TokenRequests.Cancel:
+                    case TokenRequests.Reactivate:
+                        return Internals.Parsers.Common.getResponseCode(this.payloadData.answer);
+                    default:
+                        throw new Error(`Unsupported request entity.`);
+                }
             }
         }
         return void 0;

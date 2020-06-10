@@ -5,17 +5,14 @@
     "url": "https://balmante.eti.br"
   },
   "name": "@singleware/payzen",
-  "description": "Singleware package containing a rest client for the PayZen API.",
+  "description": "Singleware package containing a rest client for the PayZen API v4.",
   "license": "MIT",
-  "version": "1.0.14",
+  "version": "1.0.22",
   "main": "release/source/index.js",
   "types": "release/types/index.d.ts",
   "keywords": [
-    "payzen",
-    "payment",
-    "gateway",
-    "api client",
-    "rest client"
+    "payzen client",
+    "payzen api client"
   ],
   "repository": {
     "type": "git",
@@ -28,12 +25,14 @@
   },
   "devDependencies": {
     "@singleware/testing": "^1.0.1",
-    "@types/node": "^12.12.30",
-    "prettier": "^1.19.1",
-    "typescript": "^3.8.3"
+    "@types/node": "^12.12.47",
+    "prettier": "^2.0.5",
+    "typescript": "^3.9.5"
   },
   "prettier": {
-    "printWidth": 140,
+    "endOfLine": "lf",
+    "trailingComma": "none",
+    "printWidth": 120,
     "tabWidth": 2,
     "singleQuote": true,
     "semi": true

@@ -17,28 +17,28 @@ export class Basic extends Class.Null {
    * Primary Account Number.
    * Between 8 and 19 characters.
    */
-  @RestDB.Schema.Required()
   @RestDB.Schema.String(8, 19)
+  @RestDB.Schema.Null()
   @Class.Public()
-  public pan!: string;
+  public pan?: string;
 
   /**
    * Expiration month.
    * Use 2 character digits.
    */
-  @RestDB.Schema.Required()
   @RestDB.Schema.String(2, 2)
+  @RestDB.Schema.Null()
   @Class.Public()
-  public expiryMonth!: string;
+  public expiryMonth?: string;
 
   /**
    * Expiration year.
    * Use 2 character digits.
    */
-  @RestDB.Schema.Required()
   @RestDB.Schema.String(2, 2)
+  @RestDB.Schema.Null()
   @Class.Public()
-  public expiryYear!: string;
+  public expiryYear?: string;
 
   /**
    * Security code.

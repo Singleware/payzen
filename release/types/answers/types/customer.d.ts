@@ -1,0 +1,16 @@
+/*!
+ * Copyright (C) 2019 Silas B. Domingos
+ * This source code is licensed under the MIT License as described in the file LICENSE.
+ */
+/**
+ * Customer types.
+ */
+export declare namespace Customer {
+    /**
+     * Customer categories.
+     */
+    enum Category {
+        Private = "PRIVATE",
+        Company = "COMPANY"
+    }
+}

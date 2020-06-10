@@ -47,8 +47,7 @@ export class Subscription extends Testing.Case {
       orderId: 'swe-subscription-successful',
       effectDate: new Date(),
       paymentMethodToken: token,
-      rrule: 'RRULE:FREQ=MONTHLY;BYMONTHDAY=1;COUNT=10',
-      customer: Helper.getCustomerEntity()
+      rrule: 'RRULE:FREQ=MONTHLY;BYMONTHDAY=1;COUNT=10'
     });
     this.isString(id);
     this.isGreaterThanOrEqual(id.length, 14);

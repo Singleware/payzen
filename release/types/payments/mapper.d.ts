@@ -6,6 +6,10 @@ import { Entity } from './entity';
  */
 export declare class Mapper extends RestDB.Mapper<Entity> {
     /**
+     * Client instance.
+     */
+    private client;
+    /**
      * Default constructor.
      * @param dependencies Mapper dependencies.
      */
@@ -15,5 +19,5 @@ export declare class Mapper extends RestDB.Mapper<Entity> {
      * @param request Payment creation request.
      * @returns Returns a promise to get the payment Id or undefined when the operation has been failed.
      */
-    create(request: Requests.Create): Promise<string | undefined>;
+    create(request: Requests.Create): Promise<string>;
 }

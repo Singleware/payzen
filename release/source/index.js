@@ -1,11 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Types = exports.Orders = exports.Transactions = exports.Subscriptions = exports.Payments = exports.Tokens = exports.Tests = exports.Internals = void 0;
 /*!
  * Copyright (C) 2019 Silas B. Domingos
  * This source code is licensed under the MIT License as described in the file LICENSE.
  */
 var client_1 = require("./client");
-exports.Client = client_1.Client;
+Object.defineProperty(exports, "Client", { enumerable: true, get: function () { return client_1.Client; } });
 // Imported aliases.
 const Internals = require("./internals");
 const Tests = require("./tests");

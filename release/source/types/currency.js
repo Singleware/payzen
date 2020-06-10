@@ -4,6 +4,7 @@
  * This source code is licensed under the MIT License as described in the file LICENSE.
  */
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Currency = void 0;
 /**
  * Payment currencies.
  * @see https://payzen.io/in/webservices-payment/implementation-webservices-v5/list-of-supported-currencies-paymentrequest.currency.html

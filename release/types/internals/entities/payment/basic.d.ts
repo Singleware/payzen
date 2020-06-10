@@ -12,17 +12,17 @@ export declare class Basic extends Class.Null {
      * Primary Account Number.
      * Between 8 and 19 characters.
      */
-    pan: string;
+    pan?: string;
     /**
      * Expiration month.
      * Use 2 character digits.
      */
-    expiryMonth: string;
+    expiryMonth?: string;
     /**
      * Expiration year.
      * Use 2 character digits.
      */
-    expiryYear: string;
+    expiryYear?: string;
     /**
      * Security code.
      * Between 3 and 4 characters.

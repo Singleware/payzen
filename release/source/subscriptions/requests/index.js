@@ -5,11 +5,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * This source code is licensed under the MIT License as described in the file LICENSE.
  */
 var get_1 = require("./get");
-exports.Get = get_1.Get;
+Object.defineProperty(exports, "Get", { enumerable: true, get: function () { return get_1.Get; } });
 var create_1 = require("./create");
-exports.Create = create_1.Create;
+Object.defineProperty(exports, "Create", { enumerable: true, get: function () { return create_1.Create; } });
 var update_1 = require("./update");
-exports.Update = update_1.Update;
+Object.defineProperty(exports, "Update", { enumerable: true, get: function () { return update_1.Update; } });
 var cancel_1 = require("./cancel");
-exports.Cancel = cancel_1.Cancel;
+Object.defineProperty(exports, "Cancel", { enumerable: true, get: function () { return cancel_1.Cancel; } });
 //# sourceMappingURL=index.js.map
