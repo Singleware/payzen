@@ -16,7 +16,7 @@ export class Payment extends Class.Null {
    * @returns Returns the payment response Id or undefined when the operation was failed.
    */
   @Class.Public()
-  public static getResponseId(answer: RestDB.Entity): string | undefined {
+  public static getResponseId<R>(answer: RestDB.Entity): R {
     if (answer.formToken !== void 0) {
       return answer.formToken;
     } else if (answer.transactions instanceof Array) {

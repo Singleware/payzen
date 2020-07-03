@@ -55,11 +55,13 @@ let Client = class Client extends RestDB.Driver {
      */
     getInsertResponse(model, response) {
         this.payloadData = void 0;
-        if (response.status.code === 200) {
-            if (!(response.payload instanceof Object)) {
-                throw new Error(`The response body must be an object containing the response results.`);
-            }
-            this.payloadData = response.payload;
+        if (response.status.code !== 200) {
+            throw new Error(`Unexpected response status: ${response.status.code}`);
+        }
+        else if (!((this.payloadData = response.payload) instanceof Object)) {
+            throw new Error(`Response body must have an object.`);
+        }
+        else {
             if (this.payloadData.status !== 'SUCCESS') {
                 const answer = this.payloadData.answer;
                 if (answer.detailedErrorMessage !== void 0) {
@@ -106,7 +108,6 @@ let Client = class Client extends RestDB.Driver {
                 }
             }
         }
-        return void 0;
     }
     /**
      * Notify an error in the given response entity for all listeners.

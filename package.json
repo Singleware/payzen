@@ -7,7 +7,7 @@
   "name": "@singleware/payzen",
   "description": "Singleware package containing a rest client for the PayZen API v4.",
   "license": "MIT",
-  "version": "1.0.22",
+  "version": "1.0.23",
   "main": "release/source/index.js",
   "types": "release/types/index.d.ts",
   "keywords": [
@@ -21,13 +21,13 @@
   "dependencies": {
     "@singleware/class": "^1.1.19",
     "@singleware/injection": "^1.0.23",
-    "@singleware/restdb": "^1.3.67"
+    "@singleware/restdb": "^1.3.72"
   },
   "devDependencies": {
     "@singleware/testing": "^1.0.1",
     "@types/node": "^12.12.47",
     "prettier": "^2.0.5",
-    "typescript": "^3.9.5"
+    "typescript": "^3.9.6"
   },
   "prettier": {
     "endOfLine": "lf",

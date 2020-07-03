@@ -22,13 +22,10 @@ let Common = class Common extends Class.Null {
      * @returns Returns the string 'ok' when the response code indicates success, undefined otherwise.
      */
     static getResponseCode(answer) {
-        if (answer.responseCode === void 0) {
+        if (answer.responseCode === void 0 || answer.responseCode !== 0) {
             throw new Error(`Unsupported answer response.`);
         }
-        else if (answer.responseCode === 0) {
-            return 'ok';
-        }
-        return void 0;
+        return 'ok';
     }
 };
 __decorate([

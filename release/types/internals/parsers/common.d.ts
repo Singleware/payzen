@@ -13,5 +13,5 @@ export declare class Common extends Class.Null {
      * @param answer Answer entity.
      * @returns Returns the string 'ok' when the response code indicates success, undefined otherwise.
      */
-    static getResponseCode(answer: RestDB.Entity): string | undefined;
+    static getResponseCode<R>(answer: RestDB.Entity): R;
 }

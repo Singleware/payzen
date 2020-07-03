@@ -16,11 +16,11 @@ export class Order extends Class.Null {
    * @returns Returns the order response Id or undefined when the operation was failed.
    */
   @Class.Public()
-  public static getResponseId(answer: RestDB.Entity): string | undefined {
+  public static getResponseId<R>(answer: RestDB.Entity): R {
     if (answer.orderId === void 0) {
       throw new Error(`Unsupported order response.`);
     }
-    return answer.orderId || void 0;
+    return answer.orderId;
   }
 
   /**

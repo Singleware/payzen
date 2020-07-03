@@ -25,7 +25,7 @@ let Transaction = class Transaction extends Class.Null {
         if (answer.uuid === void 0) {
             throw new Error(`Unsupported transaction response.`);
         }
-        return answer.uuid || void 0;
+        return answer.uuid;
     }
     /**
      * Gets the subscription response code.

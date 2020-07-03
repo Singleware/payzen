@@ -23,7 +23,7 @@ export declare class Client extends RestDB.Driver {
      * @returns Returns the result Id or undefined when the result Id was not found.
      * @throws Throws an error when the response body doesn't contains the insert results.
      */
-    protected getInsertResponse(model: RestDB.Model, response: RestDB.Responses.Output): string | undefined;
+    protected getInsertResponse<R>(model: RestDB.Model, response: RestDB.Responses.Output): R | Promise<R>;
     /**
      * Notify an error in the given response entity for all listeners.
      * @param model Entity model.

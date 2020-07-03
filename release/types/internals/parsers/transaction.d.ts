@@ -13,7 +13,7 @@ export declare class Transaction extends Class.Null {
      * @param answer Answer entity.
      * @returns Returns the transaction response Id or undefined when the operation was failed.
      */
-    static getResponseId(answer: RestDB.Entity): string | undefined;
+    static getResponseId<R>(answer: RestDB.Entity): R;
     /**
      * Gets the subscription response code.
      * @param answer Answer entity.

@@ -13,5 +13,5 @@ export declare class Payment extends Class.Null {
      * @param answer Answer entity.
      * @returns Returns the payment response Id or undefined when the operation was failed.
      */
-    static getResponseId(answer: RestDB.Entity): string | undefined;
+    static getResponseId<R>(answer: RestDB.Entity): R;
 }

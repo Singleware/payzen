@@ -25,7 +25,7 @@ let Subscription = class Subscription extends Class.Null {
         if (answer.subscriptionId === void 0) {
             throw new Error(`Unsupported subscription response.`);
         }
-        return answer.subscriptionId || void 0;
+        return answer.subscriptionId;
     }
     /**
      * Gets the subscription response code.

@@ -25,7 +25,7 @@ let Order = class Order extends Class.Null {
         if (answer.orderId === void 0) {
             throw new Error(`Unsupported order response.`);
         }
-        return answer.orderId || void 0;
+        return answer.orderId;
     }
     /**
      * Gets the subscription response code.

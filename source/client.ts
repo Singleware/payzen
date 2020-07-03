@@ -51,13 +51,13 @@ export class Client extends RestDB.Driver {
    * @throws Throws an error when the response body doesn't contains the insert results.
    */
   @Class.Protected()
-  protected getInsertResponse(model: RestDB.Model, response: RestDB.Responses.Output): string | undefined {
+  protected getInsertResponse<R>(model: RestDB.Model, response: RestDB.Responses.Output): R | Promise<R> {
     this.payloadData = void 0;
-    if (response.status.code === 200) {
-      if (!(response.payload instanceof Object)) {
-        throw new Error(`The response body must be an object containing the response results.`);
-      }
-      this.payloadData = <RestDB.Entity>response.payload;
+    if (response.status.code !== 200) {
+      throw new Error(`Unexpected response status: ${response.status.code}`);
+    } else if (!((this.payloadData = response.payload) instanceof Object)) {
+      throw new Error(`Response body must have an object.`);
+    } else {
       if (this.payloadData.status !== 'SUCCESS') {
         const answer = this.payloadData.answer;
         if (answer.detailedErrorMessage !== void 0) {
@@ -101,7 +101,6 @@ export class Client extends RestDB.Driver {
         }
       }
     }
-    return void 0;
   }
 
   /**

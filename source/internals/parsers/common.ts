@@ -16,12 +16,10 @@ export class Common extends Class.Null {
    * @returns Returns the string 'ok' when the response code indicates success, undefined otherwise.
    */
   @Class.Public()
-  public static getResponseCode(answer: RestDB.Entity): string | undefined {
-    if (answer.responseCode === void 0) {
+  public static getResponseCode<R>(answer: RestDB.Entity): R {
+    if (answer.responseCode === void 0 || answer.responseCode !== 0) {
       throw new Error(`Unsupported answer response.`);
-    } else if (answer.responseCode === 0) {
-      return 'ok';
     }
-    return void 0;
+    return <any>'ok';
   }
 }

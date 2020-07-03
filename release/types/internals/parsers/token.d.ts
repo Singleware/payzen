@@ -13,5 +13,5 @@ export declare class Token extends Class.Null {
      * @param answer Answer entity.
      * @returns Returns the token response Id or undefined when the operation was failed.
      */
-    static getResponseId(answer: RestDB.Entity): string | undefined;
+    static getResponseId<R>(answer: RestDB.Entity): any;
 }

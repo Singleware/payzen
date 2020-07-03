@@ -16,7 +16,7 @@ export class Token extends Class.Null {
    * @returns Returns the token response Id or undefined when the operation was failed.
    */
   @Class.Public()
-  public static getResponseId(answer: RestDB.Entity): string | undefined {
+  public static getResponseId<R>(answer: RestDB.Entity): any {
     if (answer.formToken !== void 0) {
       return answer.formToken;
     } else if (answer.paymentMethodToken !== void 0) {

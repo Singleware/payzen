@@ -16,7 +16,7 @@ export class Test extends Class.Null {
    * @returns Returns the test response value or undefined when the test has been failed.
    */
   @Class.Public()
-  public static getResponseValue(answer: RestDB.Entity): string | undefined {
+  public static getResponseValue<R>(answer: RestDB.Entity): R {
     if (answer.value === void 0) {
       throw new Error(`Unsupported token response.`);
     }

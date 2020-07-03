@@ -13,5 +13,5 @@ export declare class Test extends Class.Null {
      * @param answer Answer entity.
      * @returns Returns the test response value or undefined when the test has been failed.
      */
-    static getResponseValue(answer: RestDB.Entity): string | undefined;
+    static getResponseValue<R>(answer: RestDB.Entity): R;
 }

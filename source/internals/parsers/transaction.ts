@@ -16,11 +16,11 @@ export class Transaction extends Class.Null {
    * @returns Returns the transaction response Id or undefined when the operation was failed.
    */
   @Class.Public()
-  public static getResponseId(answer: RestDB.Entity): string | undefined {
+  public static getResponseId<R>(answer: RestDB.Entity): R {
     if (answer.uuid === void 0) {
       throw new Error(`Unsupported transaction response.`);
     }
-    return answer.uuid || void 0;
+    return answer.uuid;
   }
 
   /**
