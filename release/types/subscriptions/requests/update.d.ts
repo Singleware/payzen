@@ -1,10 +1,10 @@
 /*!
- * Copyright (C) 2019 Silas B. Domingos
+ * Copyright (C) 2019-2020 Silas B. Domingos
  * This source code is licensed under the MIT License as described in the file LICENSE.
  */
 import * as Class from '@singleware/class';
+import * as Transactions from '../../transactions';
 import * as Types from '../../types';
-import * as Internals from '../../internals';
 /**
  * Update subscription, entity class.
  */
@@ -56,5 +56,5 @@ export declare class Update extends Class.Null {
     /**
      * Transaction options.
      */
-    transactionOptions?: Internals.Entities.Transaction.Complete;
+    transactionOptions?: Transactions.Internals.Options;
 }

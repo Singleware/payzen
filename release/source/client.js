@@ -8,19 +8,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Client = void 0;
 /*!
- * Copyright (C) 2019 Silas B. Domingos
+ * Copyright (C) 2019-2020 Silas B. Domingos
  * This source code is licensed under the MIT License as described in the file LICENSE.
  */
 const Class = require("@singleware/class");
 const Injection = require("@singleware/injection");
 const RestDB = require("@singleware/restdb");
-const TestRequests = require("./tests/requests");
-const TokenRequests = require("./tokens/requests");
-const PaymentRequests = require("./payments/requests");
-const TransactionRequests = require("./transactions/requests");
-const SubscriptionRequests = require("./subscriptions/requests");
-const OrderRequests = require("./orders/requests");
-const Internals = require("./internals");
 /**
  * Client driver class.
  */
@@ -33,12 +26,43 @@ let Client = class Client extends RestDB.Driver {
         this.connect('https://api.payzen.com.br/api-payment/V4');
     }
     /**
-     * Gets the request query string based on the specified entity model, fields and query filter.
+     * Get the insert result from the given response entity.
+     * @param model Entity model.
+     * @param response Response entity.
+     * @returns Returns the insert result.
+     * @throws Throws an error when the server response is invalid.
+     */
+    getInsertResponse(model, response) {
+        this.lastPayload = response.payload;
+        if (response.status.code !== 200) {
+            throw new Error(`Unexpected insert(${response.input.method}) response status: ${response.status.code}`);
+        }
+        else if (!(this.lastPayload instanceof Object) || this.lastPayload.answer === void 0) {
+            throw new Error(`Response payload must have the answer property.`);
+        }
+        else {
+            const answer = this.lastPayload.answer;
+            if (this.lastPayload.status !== 'SUCCESS') {
+                if (answer.detailedErrorMessage) {
+                    throw new Error(`${answer.detailedErrorMessage} (code: ${answer.detailedErrorCode})`);
+                }
+                else if (answer.errorMessage) {
+                    throw new Error(`${answer.errorMessage} (code: ${answer.errorCode})`);
+                }
+                else {
+                    throw new Error(`Unexpected server error.`);
+                }
+            }
+            return answer;
+        }
+    }
+    /**
+     * Get the request query string based on the specified entity model, filters and fields.
      * @param model Entity model.
      * @param query Query filter.
-     * @param fields Viewed fields.
-     * @returns Returns the parsed query string.
-     * @throws Throws an error when used with filters or viewed fields. (Feature not supported)
+     * @param fields Fields to select.
+     * @returns Returns the request query string.
+     * @throws Throws an error when used with filters or selected fields. (Feature doesn't supported)
      */
     getRequestQuery(model, query, fields) {
         if (query || (fields && fields.length > 0)) {
@@ -47,105 +71,31 @@ let Client = class Client extends RestDB.Driver {
         return '';
     }
     /**
-     * Gets the result Id from the given response entity.
-     * @param model Entity model.
-     * @param response Response entity.
-     * @returns Returns the result Id or undefined when the result Id was not found.
-     * @throws Throws an error when the response body doesn't contains the insert results.
-     */
-    getInsertResponse(model, response) {
-        this.payloadData = void 0;
-        if (response.status.code !== 200) {
-            throw new Error(`Unexpected response status: ${response.status.code}`);
-        }
-        else if (!((this.payloadData = response.payload) instanceof Object)) {
-            throw new Error(`Response body must have an object.`);
-        }
-        else {
-            if (this.payloadData.status !== 'SUCCESS') {
-                const answer = this.payloadData.answer;
-                if (answer.detailedErrorMessage !== void 0) {
-                    throw new Error(`${answer.detailedErrorCode}: ${answer.detailedErrorMessage}`);
-                }
-                else if (answer.errorMessage !== void 0) {
-                    throw new Error(`${answer.errorCode}: ${answer.errorMessage}`);
-                }
-                else {
-                    throw new Error(`Unknown error.`);
-                }
-            }
-            else {
-                switch (model) {
-                    case PaymentRequests.Create:
-                        return Internals.Parsers.Payment.getResponseId(this.payloadData.answer);
-                    case SubscriptionRequests.Get:
-                    case SubscriptionRequests.Create:
-                        return Internals.Parsers.Subscription.getResponseId(this.payloadData.answer);
-                    case TransactionRequests.Get:
-                    case TransactionRequests.Cancel:
-                    case TransactionRequests.Refund:
-                    case TransactionRequests.Rollback:
-                    case TransactionRequests.Validate:
-                    case TransactionRequests.Update:
-                    case TransactionRequests.Duplicate:
-                        return Internals.Parsers.Transaction.getResponseId(this.payloadData.answer);
-                    case OrderRequests.Get:
-                        return Internals.Parsers.Order.getResponseId(this.payloadData.answer);
-                    case TokenRequests.Get:
-                    case TokenRequests.Create:
-                    case TokenRequests.Transaction:
-                        return Internals.Parsers.Token.getResponseId(this.payloadData.answer);
-                    case TestRequests.Create:
-                        return Internals.Parsers.Test.getResponseValue(this.payloadData.answer);
-                    case SubscriptionRequests.Update:
-                    case SubscriptionRequests.Cancel:
-                    case TransactionRequests.Capture:
-                    case TokenRequests.Cancel:
-                    case TokenRequests.Reactivate:
-                        return Internals.Parsers.Common.getResponseCode(this.payloadData.answer);
-                    default:
-                        throw new Error(`Unsupported request entity.`);
-                }
-            }
-        }
-    }
-    /**
-     * Notify an error in the given response entity for all listeners.
-     * @param model Entity model.
-     * @param response Response entity.
-     */
-    async notifyErrorResponse(model, response) {
-        this.payloadData = response.payload instanceof Object ? response.payload : void 0;
-        await super.notifyErrorResponse(model, response);
-    }
-    /**
-     * Gets the payload from the last request.
+     * Get the last request payload.
      */
     get payload() {
-        return this.payloadData;
+        return this.lastPayload;
     }
     /**
-     * Sets the username and password authorization for all subsequent requests.
+     * Set the username and password authorization for all subsequent requests.
      * @param username Username.
      * @param password Password.
-     * @returns Returns the client instance.
+     * @returns Returns the instance itself.
      */
     setAuthorization(username, password) {
-        return this.setHeader('Authorization', `Basic ${RestDB.Coder.toBase64(`${username}:${password}`)}`), this;
+        this.setAuthHeader('Authorization', `Basic ${RestDB.Coder.toBase64(`${username}:${password}`)}`);
+        return this;
     }
 };
 __decorate([
     Class.Private()
-], Client.prototype, "payloadData", void 0);
-__decorate([
-    Class.Protected()
-], Client.prototype, "getRequestQuery", null);
+], Client.prototype, "lastPayload", void 0);
 __decorate([
     Class.Protected()
 ], Client.prototype, "getInsertResponse", null);
 __decorate([
     Class.Protected()
-], Client.prototype, "notifyErrorResponse", null);
+], Client.prototype, "getRequestQuery", null);
 __decorate([
     Class.Public()
 ], Client.prototype, "payload", null);

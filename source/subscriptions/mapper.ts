@@ -1,5 +1,5 @@
 /*!
- * Copyright (C) 2019 Silas B. Domingos
+ * Copyright (C) 2019-2020 Silas B. Domingos
  * This source code is licensed under the MIT License as described in the file LICENSE.
  */
 import * as Class from '@singleware/class';
@@ -17,20 +17,45 @@ import { Entity } from './entity';
 @Injection.Inject(Client)
 @Injection.Describe({ singleton: true, name: 'subscription' })
 @Class.Describe()
-export class Mapper extends RestDB.Mapper<Entity> {
+export class Mapper extends Class.Null {
+  /**
+   * Last response payload.
+   */
+  @Class.Private()
+  private lastPayload?: Entity;
+
   /**
    * Client instance.
    */
+  @Injection.Inject(() => Client)
   @Class.Private()
   private client!: Client;
 
   /**
-   * Default constructor.
-   * @param dependencies Mapper dependencies.
+   * Mapper instance.
    */
-  constructor(dependencies: any) {
-    super(dependencies.client, Entity);
-    this.client = dependencies.client;
+  @Class.Private()
+  private mapper = new RestDB.Mapper<Entity>(this.client, Entity);
+
+  /**
+   * Get the last request payload.
+   */
+  @Class.Public()
+  public get payload(): Entity | undefined {
+    return this.lastPayload;
+  }
+
+  /**
+   * Create a new subscription request.
+   * @param request Subscription creation request.
+   * @returns Returns a promise to get the subscription Id.
+   * @throws Throws an error when the server response is invalid.
+   */
+  @Class.Public()
+  public async create(request: Requests.Create): Promise<string> {
+    this.lastPayload = void 0;
+    const answer = await this.mapper.insertEx(Requests.Create, request);
+    return answer.subscriptionId;
   }
 
   /**
@@ -40,19 +65,10 @@ export class Mapper extends RestDB.Mapper<Entity> {
    */
   @Class.Public()
   public async load(request: Requests.Get): Promise<Entity | undefined> {
-    if ((await super.insertEx(Requests.Get, request)) !== void 0) {
-      return RestDB.Outputer.createFull(Entity, (<RestDB.Entity>this.client.payload).answer, []);
-    }
-  }
-
-  /**
-   * Creates a new subscription request.
-   * @param request Subscription creation request.
-   * @returns Returns a promise to get the subscription Id or undefined when the operation has been failed.
-   */
-  @Class.Public()
-  public async create(request: Requests.Create): Promise<string | undefined> {
-    return await super.insertEx(Requests.Create, request);
+    this.lastPayload = void 0;
+    const answer = await this.mapper.insertEx(Requests.Get, request);
+    this.lastPayload = RestDB.Outputer.createFull(Entity, answer, []);
+    return this.lastPayload;
   }
 
   /**
@@ -62,7 +78,9 @@ export class Mapper extends RestDB.Mapper<Entity> {
    */
   @Class.Public()
   public async modify(request: Requests.Update): Promise<boolean> {
-    return (await super.insertEx(Requests.Update, request)) !== void 0;
+    this.lastPayload = void 0;
+    const answer = await this.mapper.insertEx(Requests.Update, request);
+    return answer.responseCode === 0;
   }
 
   /**
@@ -72,6 +90,8 @@ export class Mapper extends RestDB.Mapper<Entity> {
    */
   @Class.Public()
   public async cancel(request: Requests.Cancel): Promise<boolean> {
-    return (await super.insertEx(Requests.Cancel, request)) !== void 0;
+    this.lastPayload = void 0;
+    const answer = await this.mapper.insertEx(Requests.Cancel, request);
+    return answer.responseCode === 0;
   }
 }

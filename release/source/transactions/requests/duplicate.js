@@ -8,13 +8,13 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Duplicate = void 0;
 /*!
- * Copyright (C) 2019 Silas B. Domingos
+ * Copyright (C) 2019-2020 Silas B. Domingos
  * This source code is licensed under the MIT License as described in the file LICENSE.
  */
 const Class = require("@singleware/class");
 const RestDB = require("@singleware/restdb");
-const Types = require("../../types");
-const Internals = require("../../internals");
+const Types = require("../types");
+const Internals = require("../internals");
 /**
  * Duplicate transaction, entity class.
  */
@@ -38,22 +38,18 @@ __decorate([
 ], Duplicate.prototype, "currency", void 0);
 __decorate([
     RestDB.Schema.String(0, 255),
-    RestDB.Schema.Null(),
     Class.Public()
 ], Duplicate.prototype, "comment", void 0);
 __decorate([
     RestDB.Schema.String(0, 64),
-    RestDB.Schema.Null(),
     Class.Public()
 ], Duplicate.prototype, "orderId", void 0);
 __decorate([
     RestDB.Schema.Object(Object),
-    RestDB.Schema.Null(),
     Class.Public()
 ], Duplicate.prototype, "metadata", void 0);
 __decorate([
-    RestDB.Schema.Object(Internals.Entities.Transaction.Duplicate),
-    RestDB.Schema.Null(),
+    RestDB.Schema.Object(Internals.Card.Duplicate),
     Class.Public()
 ], Duplicate.prototype, "cardDuplicate", void 0);
 Duplicate = __decorate([

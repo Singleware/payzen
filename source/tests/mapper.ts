@@ -1,5 +1,5 @@
 /*!
- * Copyright (C) 2019 Silas B. Domingos
+ * Copyright (C) 2019-2020 Silas B. Domingos
  * This source code is licensed under the MIT License as described in the file LICENSE.
  */
 import * as Class from '@singleware/class';
@@ -17,22 +17,28 @@ import { Entity } from './entity';
 @Injection.Inject(Client)
 @Injection.Describe({ singleton: true, name: 'test' })
 @Class.Describe()
-export class Mapper extends RestDB.Mapper<Entity> {
+export class Mapper extends Class.Null {
   /**
-   * Default constructor.
-   * @param dependencies Mapper dependencies.
+   * Client instance.
    */
-  constructor(dependencies: any) {
-    super(dependencies.client, Entity);
-  }
+  @Injection.Inject(() => Client)
+  @Class.Private()
+  private client!: Client;
 
   /**
-   * Creates a new test request.
+   * Mapper instance.
+   */
+  @Class.Private()
+  private mapper = new RestDB.Mapper<Entity>(this.client, Entity);
+
+  /**
+   * Send a test request.
    * @param request Test creation request.
-   * @returns Returns a promise to get the test value or undefined when the operation has been failed.
+   * @returns Returns a promise to get true when the test response is valid, false otherwise.
    */
   @Class.Public()
-  public async create(request: Requests.Create): Promise<string | undefined> {
-    return await super.insertEx(Requests.Create, request);
+  public async send(request: Requests.Send): Promise<boolean> {
+    const answer = await this.mapper.insertEx(Requests.Send, request);
+    return answer.value === request.value;
   }
 }

@@ -1,12 +1,13 @@
 /*!
- * Copyright (C) 2019 Silas B. Domingos
+ * Copyright (C) 2019-2020 Silas B. Domingos
  * This source code is licensed under the MIT License as described in the file LICENSE.
  */
 import * as Class from '@singleware/class';
 import * as RestDB from '@singleware/restdb';
 
+import * as Transactions from '../../transactions';
+
 import * as Types from '../../types';
-import * as Internals from '../../internals';
 
 /**
  * Create subscription, entity class.
@@ -36,18 +37,16 @@ export class Create extends Class.Null {
    * Max 255 characters.
    */
   @RestDB.Schema.String(0, 255)
-  @RestDB.Schema.Null()
   @Class.Public()
-  public comment?: string | null;
+  public comment?: string;
 
   /**
    * Subscription description.
    * Max 255 characters.
    */
   @RestDB.Schema.String(0, 255)
-  @RestDB.Schema.Null()
   @Class.Public()
-  public description?: string | null;
+  public description?: string;
 
   /**
    * Subscription effect date.
@@ -62,35 +61,31 @@ export class Create extends Class.Null {
    * Max 12 integer digits.
    */
   @RestDB.Schema.Integer(0, 999999999999)
-  @RestDB.Schema.Null()
   @Class.Public()
-  public initialAmount?: number | null;
+  public initialAmount?: number;
 
   /**
    * Initial amount installment number.
    * Integer between 0 and 999 digits.
    */
   @RestDB.Schema.Integer(0, 999)
-  @RestDB.Schema.Null()
   @Class.Public()
-  public initialAmountNumber?: number | null;
+  public initialAmountNumber?: number;
 
   /**
    * Request order Id.
    * Max 64 characters.
    */
   @RestDB.Schema.String(0, 64)
-  @RestDB.Schema.Null()
   @Class.Public()
-  public orderId?: string | null;
+  public orderId?: string;
 
   /**
    * Custom metadata for the request.
    */
   @RestDB.Schema.Object(Object)
-  @RestDB.Schema.Null()
   @Class.Public()
-  public metadata?: RestDB.Entity | null;
+  public metadata?: RestDB.Entity;
 
   /**
    * Card token.
@@ -114,8 +109,7 @@ export class Create extends Class.Null {
   /**
    * Transaction options.
    */
-  @RestDB.Schema.Object(Internals.Entities.Transaction.Complete)
-  @RestDB.Schema.Null()
+  @RestDB.Schema.Object(() => Transactions.Internals.Options)
   @Class.Public()
-  public transactionOptions?: Internals.Entities.Transaction.Complete | null;
+  public transactionOptions?: Transactions.Internals.Options;
 }

@@ -8,13 +8,15 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Entity = void 0;
 /*!
- * Copyright (C) 2019 Silas B. Domingos
+ * Copyright (C) 2019-2020 Silas B. Domingos
  * This source code is licensed under the MIT License as described in the file LICENSE.
  */
 const Class = require("@singleware/class");
 const RestDB = require("@singleware/restdb");
-const Types = require("../types");
-const Internals = require("../internals");
+const Payments = require("../payments");
+const Order = require("../orders");
+const Types = require("./types");
+const Internals = require("./internals");
 /**
  * Transaction entity class.
  */
@@ -43,22 +45,22 @@ __decorate([
 ], Entity.prototype, "creationDate", void 0);
 __decorate([
     RestDB.Schema.Required(),
-    RestDB.Schema.Enumeration(Object.values(Types.Transaction.Status)),
+    RestDB.Schema.Enumeration(Object.values(Types.Status)),
     Class.Public()
 ], Entity.prototype, "status", void 0);
 __decorate([
     RestDB.Schema.Required(),
-    RestDB.Schema.Enumeration(Object.values(Types.Transaction.State)),
+    RestDB.Schema.Enumeration(Object.values(Types.DetailedStatus)),
     Class.Public()
 ], Entity.prototype, "detailedStatus", void 0);
 __decorate([
     RestDB.Schema.Required(),
-    RestDB.Schema.Object(Internals.Entities.Order.Details),
+    RestDB.Schema.Object(() => Order.Internals.Details),
     Class.Public()
 ], Entity.prototype, "orderDetails", void 0);
 __decorate([
     RestDB.Schema.Required(),
-    RestDB.Schema.Object(Internals.Entities.Customer),
+    RestDB.Schema.Object(Internals.Customer),
     Class.Public()
 ], Entity.prototype, "customer", void 0);
 __decorate([
@@ -83,12 +85,12 @@ __decorate([
 ], Entity.prototype, "detailedErrorMessage", void 0);
 __decorate([
     RestDB.Schema.Required(),
-    RestDB.Schema.Enumeration(Object.values(Types.Authentication.Strong)),
+    RestDB.Schema.Enumeration(Object.values(Types.StrongAuthentication)),
     Class.Public()
 ], Entity.prototype, "effectiveStrongAuthentication", void 0);
 __decorate([
     RestDB.Schema.Required(),
-    RestDB.Schema.Enumeration(Object.values(Types.Transaction.Mode)),
+    RestDB.Schema.Enumeration(Object.values(Types.Operation)),
     Class.Public()
 ], Entity.prototype, "operationType", void 0);
 __decorate([
@@ -98,7 +100,7 @@ __decorate([
 ], Entity.prototype, "paymentMethodToken", void 0);
 __decorate([
     RestDB.Schema.Required(),
-    RestDB.Schema.Enumeration(Object.values(Types.Payment.Method)),
+    RestDB.Schema.Enumeration(() => Object.values(Payments.Types.Method)),
     Class.Public()
 ], Entity.prototype, "paymentMethodType", void 0);
 __decorate([
@@ -108,7 +110,7 @@ __decorate([
 ], Entity.prototype, "shopId", void 0);
 __decorate([
     RestDB.Schema.Required(),
-    RestDB.Schema.Object(Internals.Entities.Transaction.Details),
+    RestDB.Schema.Object(Internals.Details),
     Class.Public()
 ], Entity.prototype, "transactionDetails", void 0);
 Entity = __decorate([

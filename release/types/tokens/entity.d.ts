@@ -1,10 +1,10 @@
 /*!
- * Copyright (C) 2019 Silas B. Domingos
+ * Copyright (C) 2019-2020 Silas B. Domingos
  * This source code is licensed under the MIT License as described in the file LICENSE.
  */
 import * as Class from '@singleware/class';
-import * as Types from '../types';
-import * as Internals from '../internals';
+import * as Payments from '../payments';
+import * as Internals from './internals';
 /**
  * Token entity class.
  */
@@ -25,13 +25,13 @@ export declare class Entity extends Class.Null {
     /**
      * Payment method type.
      */
-    paymentMethodType: Types.Payment.Method;
+    paymentMethodType: Payments.Types.Method;
     /**
      * Customer details.
      */
-    customer: Internals.Entities.Customer;
+    customer: Internals.Customer;
     /**
      * Token details.
      */
-    tokenDetails: Internals.Entities.Token.Details;
+    tokenDetails: Internals.Details;
 }

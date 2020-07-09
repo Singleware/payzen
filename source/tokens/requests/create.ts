@@ -1,12 +1,14 @@
 /*!
- * Copyright (C) 2019 Silas B. Domingos
+ * Copyright (C) 2019-2020 Silas B. Domingos
  * This source code is licensed under the MIT License as described in the file LICENSE.
  */
 import * as Class from '@singleware/class';
 import * as RestDB from '@singleware/restdb';
 
+import * as Payments from '../../payments';
+
 import * as Types from '../../types';
-import * as Internals from '../../internals';
+import * as Internals from '../internals';
 
 /**
  * Create token, entity class.
@@ -19,9 +21,8 @@ export class Create extends Class.Null {
    * Max 128 characters.
    */
   @RestDB.Schema.String(0, 128)
-  @RestDB.Schema.Null()
   @Class.Public()
-  public contrib?: string | null;
+  public contrib?: string;
 
   /**
    * Amount currency.
@@ -36,57 +37,51 @@ export class Create extends Class.Null {
    * Max 255 characters.
    */
   @RestDB.Schema.String(0, 255)
-  @RestDB.Schema.Null()
   @Class.Public()
-  public ipnTargetUrl?: string | null;
+  public ipnTargetUrl?: string;
 
   /**
    * Request order Id.
    * Max 64 characters.
    */
   @RestDB.Schema.String(0, 64)
-  @RestDB.Schema.Null()
   @Class.Public()
-  public orderId?: string | null;
+  public orderId?: string;
 
   /**
    * Custom metadata for the request.
    */
   @RestDB.Schema.Object(Object)
-  @RestDB.Schema.Null()
   @Class.Public()
-  public metadata?: RestDB.Entity | null;
+  public metadata?: RestDB.Entity;
 
   /**
    * Request finger print.
    * Required for ClearSale analyzer, 128 characters.
    */
   @RestDB.Schema.String(128, 128)
-  @RestDB.Schema.Null()
   @Class.Public()
-  public fingerPrintId?: string | null;
+  public fingerPrintId?: string;
 
   /**
    * Customer details.
    */
   @RestDB.Schema.Required()
-  @RestDB.Schema.Object(Internals.Entities.Customer)
+  @RestDB.Schema.Object(Internals.Customer)
   @Class.Public()
-  public customer!: Internals.Entities.Customer;
+  public customer!: Internals.Customer;
 
   /**
    * Transaction options.
    */
-  @RestDB.Schema.Object(Internals.Entities.Transaction.Basic)
-  @RestDB.Schema.Null()
+  @RestDB.Schema.Object(Internals.Options)
   @Class.Public()
-  public transactionOptions?: Internals.Entities.Transaction.Basic | null;
+  public transactionOptions?: Internals.Options;
 
   /**
    * Payment forms.
    */
-  @RestDB.Schema.Array(Internals.Entities.Payment.Basic, [], true, 0, 1)
-  @RestDB.Schema.Null()
+  @RestDB.Schema.Array(Payments.Internals.Form, [], true, 0, 1)
   @Class.Public()
-  public paymentForms?: Internals.Entities.Payment.Basic[] | null;
+  public paymentForms?: Payments.Internals.Form[];
 }

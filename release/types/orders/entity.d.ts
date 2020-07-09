@@ -1,9 +1,9 @@
 /*!
- * Copyright (C) 2019 Silas B. Domingos
+ * Copyright (C) 2019-2020 Silas B. Domingos
  * This source code is licensed under the MIT License as described in the file LICENSE.
  */
 import * as Class from '@singleware/class';
-import * as Internals from '../internals';
+import * as Transactions from '../transactions';
 /**
  * Order entity class.
  */
@@ -21,5 +21,5 @@ export declare class Entity extends Class.Null {
     /**
      * Order transactions.
      */
-    transactions: Internals.Entities.Order.Transaction[];
+    transactions: Transactions.Entity[];
 }

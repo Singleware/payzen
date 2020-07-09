@@ -1,11 +1,11 @@
 /*!
- * Copyright (C) 2019 Silas B. Domingos
+ * Copyright (C) 2019-2020 Silas B. Domingos
  * This source code is licensed under the MIT License as described in the file LICENSE.
  */
 import * as Class from '@singleware/class';
 import * as RestDB from '@singleware/restdb';
 
-import * as Internals from '../../internals';
+import * as Internals from '../internals';
 
 /**
  * Update transaction, entity class.
@@ -28,15 +28,13 @@ export class Update extends Class.Null {
    * Max 255 characters.
    */
   @RestDB.Schema.String(0, 255)
-  @RestDB.Schema.Null()
   @Class.Public()
-  public comment?: string | null;
+  public comment?: string;
 
   /**
    * Card payment update.
    */
-  @RestDB.Schema.Object(Internals.Entities.Transaction.Update)
-  @RestDB.Schema.Null()
+  @RestDB.Schema.Object(Internals.Card.Update)
   @Class.Public()
-  public cardUpdate?: Internals.Entities.Transaction.Update | null;
+  public cardUpdate?: Internals.Card.Update;
 }

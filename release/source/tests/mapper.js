@@ -8,7 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Mapper = void 0;
 /*!
- * Copyright (C) 2019 Silas B. Domingos
+ * Copyright (C) 2019-2020 Silas B. Domingos
  * This source code is licensed under the MIT License as described in the file LICENSE.
  */
 const Class = require("@singleware/class");
@@ -20,26 +20,34 @@ const entity_1 = require("./entity");
 /**
  * Test mapper class.
  */
-let Mapper = class Mapper extends RestDB.Mapper {
-    /**
-     * Default constructor.
-     * @param dependencies Mapper dependencies.
-     */
-    constructor(dependencies) {
-        super(dependencies.client, entity_1.Entity);
+let Mapper = class Mapper extends Class.Null {
+    constructor() {
+        super(...arguments);
+        /**
+         * Mapper instance.
+         */
+        this.mapper = new RestDB.Mapper(this.client, entity_1.Entity);
     }
     /**
-     * Creates a new test request.
+     * Send a test request.
      * @param request Test creation request.
-     * @returns Returns a promise to get the test value or undefined when the operation has been failed.
+     * @returns Returns a promise to get true when the test response is valid, false otherwise.
      */
-    async create(request) {
-        return await super.insertEx(Requests.Create, request);
+    async send(request) {
+        const answer = await this.mapper.insertEx(Requests.Send, request);
+        return answer.value === request.value;
     }
 };
 __decorate([
+    Injection.Inject(() => client_1.Client),
+    Class.Private()
+], Mapper.prototype, "client", void 0);
+__decorate([
+    Class.Private()
+], Mapper.prototype, "mapper", void 0);
+__decorate([
     Class.Public()
-], Mapper.prototype, "create", null);
+], Mapper.prototype, "send", null);
 Mapper = __decorate([
     Injection.Inject(client_1.Client),
     Injection.Describe({ singleton: true, name: 'test' }),

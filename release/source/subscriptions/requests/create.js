@@ -8,13 +8,13 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Create = void 0;
 /*!
- * Copyright (C) 2019 Silas B. Domingos
+ * Copyright (C) 2019-2020 Silas B. Domingos
  * This source code is licensed under the MIT License as described in the file LICENSE.
  */
 const Class = require("@singleware/class");
 const RestDB = require("@singleware/restdb");
+const Transactions = require("../../transactions");
 const Types = require("../../types");
-const Internals = require("../../internals");
 /**
  * Create subscription, entity class.
  */
@@ -32,12 +32,10 @@ __decorate([
 ], Create.prototype, "currency", void 0);
 __decorate([
     RestDB.Schema.String(0, 255),
-    RestDB.Schema.Null(),
     Class.Public()
 ], Create.prototype, "comment", void 0);
 __decorate([
     RestDB.Schema.String(0, 255),
-    RestDB.Schema.Null(),
     Class.Public()
 ], Create.prototype, "description", void 0);
 __decorate([
@@ -47,22 +45,18 @@ __decorate([
 ], Create.prototype, "effectDate", void 0);
 __decorate([
     RestDB.Schema.Integer(0, 999999999999),
-    RestDB.Schema.Null(),
     Class.Public()
 ], Create.prototype, "initialAmount", void 0);
 __decorate([
     RestDB.Schema.Integer(0, 999),
-    RestDB.Schema.Null(),
     Class.Public()
 ], Create.prototype, "initialAmountNumber", void 0);
 __decorate([
     RestDB.Schema.String(0, 64),
-    RestDB.Schema.Null(),
     Class.Public()
 ], Create.prototype, "orderId", void 0);
 __decorate([
     RestDB.Schema.Object(Object),
-    RestDB.Schema.Null(),
     Class.Public()
 ], Create.prototype, "metadata", void 0);
 __decorate([
@@ -76,8 +70,7 @@ __decorate([
     Class.Public()
 ], Create.prototype, "rrule", void 0);
 __decorate([
-    RestDB.Schema.Object(Internals.Entities.Transaction.Complete),
-    RestDB.Schema.Null(),
+    RestDB.Schema.Object(() => Transactions.Internals.Options),
     Class.Public()
 ], Create.prototype, "transactionOptions", void 0);
 Create = __decorate([

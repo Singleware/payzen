@@ -1,11 +1,11 @@
 /*!
- * Copyright (C) 2019 Silas B. Domingos
+ * Copyright (C) 2019-2020 Silas B. Domingos
  * This source code is licensed under the MIT License as described in the file LICENSE.
  */
 import * as Class from '@singleware/class';
 import * as RestDB from '@singleware/restdb';
 
-import * as Internals from '../internals';
+import * as Transactions from '../transactions';
 
 /**
  * Order entity class.
@@ -36,7 +36,7 @@ export class Entity extends Class.Null {
    * Order transactions.
    */
   @RestDB.Schema.Required()
-  @RestDB.Schema.Array(Internals.Entities.Order.Transaction)
+  @RestDB.Schema.Array(() => Transactions.Entity)
   @Class.Public()
-  public transactions!: Internals.Entities.Order.Transaction[];
+  public transactions!: Transactions.Entity[];
 }

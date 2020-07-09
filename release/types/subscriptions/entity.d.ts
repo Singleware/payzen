@@ -1,5 +1,5 @@
 /*!
- * Copyright (C) 2019 Silas B. Domingos
+ * Copyright (C) 2019-2020 Silas B. Domingos
  * This source code is licensed under the MIT License as described in the file LICENSE.
  */
 import * as Class from '@singleware/class';
@@ -14,13 +14,23 @@ export declare class Entity extends Class.Null {
      */
     subscriptionId: string;
     /**
+     * Subscription shop Id.
+     * Use 8 characters.
+     */
+    shopId: string;
+    /**
+     * Subscription order Id.
+     * Max 64 characters.
+     */
+    orderId?: string | null;
+    /**
      * Cancel date.
      */
     cancelDate?: Date | null;
     /**
      * Effect date.
      */
-    effectDate: Date;
+    effectDate?: Date | null;
     /**
      * Description.
      * Max 255 characters.
@@ -41,20 +51,10 @@ export declare class Entity extends Class.Null {
      */
     metadata?: RestDB.Entity | null;
     /**
-     * Subscription shop Id.
-     * Use 8 characters.
-     */
-    shopId: string;
-    /**
-     * Subscription order Id.
-     * Max 64 characters.
-     */
-    orderId?: string | null;
-    /**
      * Finalized payments.
      * Integer between 0 and 999999 digits.
      */
-    pastPaymentsNumber: number;
+    pastPaymentsNumber?: number | null;
     /**
      * Total payments.
      * Integer between 0 and 999999 digits.
@@ -64,11 +64,11 @@ export declare class Entity extends Class.Null {
      * Card token.
      * Use 32 characters.
      */
-    paymentMethodToken: string;
+    paymentMethodToken?: string | null;
     /**
      * Recurrence rule.
      * Max 255 characters.
      * @see https://www.nylas.com/blog/calendar-events-rrules/
      */
-    rrule: string;
+    rrule?: string | null;
 }

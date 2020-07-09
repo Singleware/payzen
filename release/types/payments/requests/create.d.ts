@@ -1,11 +1,12 @@
 /*!
- * Copyright (C) 2019 Silas B. Domingos
+ * Copyright (C) 2019-2020 Silas B. Domingos
  * This source code is licensed under the MIT License as described in the file LICENSE.
  */
 import * as Class from '@singleware/class';
 import * as RestDB from '@singleware/restdb';
-import * as Types from '../../types';
-import * as Internals from '../../internals';
+import * as Transactions from '../../transactions';
+import * as Types from '../types';
+import * as Internals from '../internals';
 /**
  * Create payment, entity class.
  */
@@ -19,7 +20,7 @@ export declare class Create extends Class.Null {
      * Application name and version.
      * Max 128 characters.
      */
-    contrib?: string | null;
+    contrib?: string;
     /**
      * Amount currency.
      */
@@ -28,58 +29,58 @@ export declare class Create extends Class.Null {
      * Determines which version of the formToken will be used.
      * Integer between 0 and 999.
      */
-    formTokenVersion?: number | null;
+    formTokenVersion?: number;
     /**
      * Target URL for event notifications about the request.
      * Max 255 characters.
      */
-    ipnTargetUrl?: string | null;
+    ipnTargetUrl?: string;
     /**
      * Request order Id.
      * Max 64 characters.
      */
-    orderId?: string | null;
+    orderId?: string;
     /**
      * Custom metadata for the request.
      */
-    metadata?: RestDB.Entity | null;
+    metadata?: RestDB.Entity;
     /**
      * Request finger print.
      * Required for ClearSale analyzer, 128 characters.
      */
-    fingerPrintId?: string | null;
+    fingerPrintId?: string;
     /**
      * Request action.
      */
-    formAction?: Types.Payment.Action | null;
+    formAction?: Types.Action;
     /**
      * Allow changes in the delivery mode.
      * Between 6 and 17 characters.
      */
-    overridePaymentCinematic?: string | null;
+    overridePaymentCinematic?: string;
     /**
      * Pre-saved card token.
      * Max 32 characters.
      */
-    paymentMethodToken?: string | null;
+    paymentMethodToken?: string;
     /**
      * Determines whether the request will use strong authentication or not.
      */
-    strongAuthentication?: Types.Authentication.Strong | null;
+    strongAuthentication?: Transactions.Types.StrongAuthentication;
     /**
      * Custom data to the acquirer.
      */
-    acquirerTransientData?: RestDB.Entity | null;
+    acquirerTransientData?: RestDB.Entity;
     /**
      * Customer details.
      */
-    customer: Internals.Entities.Customer;
+    customer: Internals.Customer;
     /**
      * Transaction options.
      */
-    transactionOptions?: Internals.Entities.Transaction.Complete | null;
+    transactionOptions?: Transactions.Internals.Options;
     /**
      * Payment forms.
      */
-    paymentForms?: Internals.Entities.Payment.Complete[] | null;
+    paymentForms?: Internals.Form[];
 }

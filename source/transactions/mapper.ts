@@ -1,12 +1,12 @@
 /*!
- * Copyright (C) 2019 Silas B. Domingos
+ * Copyright (C) 2019-2020 Silas B. Domingos
  * This source code is licensed under the MIT License as described in the file LICENSE.
  */
 import * as Class from '@singleware/class';
 import * as Injection from '@singleware/injection';
 import * as RestDB from '@singleware/restdb';
 
-import * as Types from '../types';
+import * as Types from './types';
 import * as Requests from './requests';
 
 import { Client } from '../client';
@@ -18,20 +18,54 @@ import { Entity } from './entity';
 @Injection.Inject(Client)
 @Injection.Describe({ singleton: true, name: 'transaction' })
 @Class.Describe()
-export class Mapper extends RestDB.Mapper<Entity> {
+export class Mapper extends Class.Null {
+  /**
+   * Last response payload.
+   */
+  @Class.Private()
+  private lastPayload?: Entity;
+
   /**
    * Client instance.
    */
+  @Injection.Inject(() => Client)
   @Class.Private()
   private client!: Client;
 
   /**
-   * Default constructor.
-   * @param dependencies Mapper dependencies.
+   * Mapper instance.
    */
-  constructor(dependencies: any) {
-    super(dependencies.client, Entity);
-    this.client = dependencies.client;
+  @Class.Private()
+  private mapper = new RestDB.Mapper<Entity>(this.client, Entity);
+
+  /**
+   * Update the current payload by a new one.
+   * @param payload New payload transaction.
+   * @param validate Determines whether or not the payload must be validated.
+   * @returns Returns the new payload.
+   * @throws Throws an error when the given payload is invalid.
+   */
+  @Class.Private()
+  private updatePayload(payload: Entity | undefined, validate?: boolean): Entity | undefined {
+    this.lastPayload = payload;
+    if (validate && payload !== void 0 && payload.detailedStatus === Types.DetailedStatus.Error) {
+      if (payload.detailedErrorMessage) {
+        throw new Error(`${payload.detailedErrorMessage} (code: ${payload.detailedErrorCode})`);
+      } else if (payload.errorMessage) {
+        throw new Error(`${payload.errorMessage} (code: ${payload.errorCode})`);
+      } else {
+        throw new Error(`Unexpected transaction error.`);
+      }
+    }
+    return payload;
+  }
+
+  /**
+   * Get the last request payload.
+   */
+  @Class.Public()
+  public get payload(): Entity | undefined {
+    return this.lastPayload;
   }
 
   /**
@@ -41,9 +75,10 @@ export class Mapper extends RestDB.Mapper<Entity> {
    */
   @Class.Public()
   public async load(request: Requests.Get): Promise<Entity | undefined> {
-    if ((await super.insertEx(Requests.Get, request)) !== void 0) {
-      return RestDB.Outputer.createFull(Entity, (<RestDB.Entity>this.client.payload).answer, []);
-    }
+    this.lastPayload = void 0;
+    const answer = await this.mapper.insertEx(Requests.Get, request);
+    const entity = RestDB.Outputer.createFull(Entity, answer, []);
+    return this.updatePayload(entity);
   }
 
   /**
@@ -53,7 +88,11 @@ export class Mapper extends RestDB.Mapper<Entity> {
    */
   @Class.Public()
   public async modify(request: Requests.Update): Promise<boolean> {
-    return (await super.insertEx(Requests.Update, request)) !== void 0;
+    this.lastPayload = void 0;
+    const answer = await this.mapper.insertEx(Requests.Update, request);
+    const entity = RestDB.Outputer.createFull(Entity, answer, []);
+    this.updatePayload(entity);
+    return true;
   }
 
   /**
@@ -63,7 +102,75 @@ export class Mapper extends RestDB.Mapper<Entity> {
    */
   @Class.Public()
   public async capture(request: Requests.Capture): Promise<boolean> {
-    return (await super.insertEx(Requests.Capture, request)) !== void 0;
+    this.lastPayload = void 0;
+    const answer = await this.mapper.insertEx(Requests.Capture, request);
+    return answer.responseCode === 0;
+  }
+
+  /**
+   * Validate the transaction that corresponds to the specified request.
+   * @param request Transaction validate request.
+   * @returns Returns a promise to get true when operation was successful, false otherwise.
+   * @throws Throws an error when the server response is invalid.
+   */
+  @Class.Public()
+  public async validate(request: Requests.Validate): Promise<boolean> {
+    this.lastPayload = void 0;
+    const answer = await this.mapper.insertEx(Requests.Validate, request);
+    const entity = RestDB.Outputer.createFull(Entity, answer, []);
+    this.updatePayload(entity);
+    return true;
+  }
+
+  /**
+   * Cancel the transaction that corresponds to the specified request.
+   * @param request Transaction cancel request.
+   * @returns Returns a promise to get true when operation was successful, false otherwise.
+   * @throws Throws an error when the server response is invalid.
+   */
+  @Class.Public()
+  public async cancel(request: Requests.Cancel): Promise<boolean> {
+    this.lastPayload = void 0;
+    const answer = await this.mapper.insertEx(Requests.Rollback, {
+      ...request,
+      resolutionMode: Types.Resolution.CancellationOnly
+    });
+    const entity = RestDB.Outputer.createFull(Entity, answer, []);
+    this.updatePayload(entity, true);
+    return true;
+  }
+
+  /**
+   * Refund the transaction that corresponds to the specified request.
+   * @param request Transaction refund request.
+   * @returns Returns a promise to get true when operation was successful, false otherwise.
+   * @throws Throws an error when the server response is invalid.
+   */
+  @Class.Public()
+  public async refund(request: Requests.Refund): Promise<boolean> {
+    this.lastPayload = void 0;
+    const answer = await this.mapper.insertEx(Requests.Rollback, {
+      ...request,
+      resolutionMode: Types.Resolution.RefundOnly
+    });
+    const entity = RestDB.Outputer.createFull(Entity, answer, []);
+    this.updatePayload(entity, true);
+    return true;
+  }
+
+  /**
+   * Cancel or Refund the transaction that corresponds to the specified request.
+   * @param request Transaction rollback request.
+   * @returns Returns a promise to get true when operation was successful, false otherwise.
+   * @throws Throws an error when the server response is invalid.
+   */
+  @Class.Public()
+  public async rollback(request: Requests.Rollback): Promise<boolean> {
+    this.lastPayload = void 0;
+    const answer = await this.mapper.insertEx(Requests.Rollback, request);
+    const entity = RestDB.Outputer.createFull(Entity, answer, []);
+    this.updatePayload(entity, true);
+    return true;
   }
 
   /**
@@ -73,46 +180,10 @@ export class Mapper extends RestDB.Mapper<Entity> {
    */
   @Class.Public()
   public async duplicate(request: Requests.Duplicate): Promise<boolean> {
-    return (await super.insertEx(Requests.Duplicate, request)) !== void 0;
-  }
-
-  /**
-   * Validate the transaction that corresponds to the specified request.
-   * @param request Transaction validate request.
-   * @returns Returns a promise to get true when operation was successful, false otherwise.
-   */
-  @Class.Public()
-  public async validate(request: Requests.Validate): Promise<boolean> {
-    return (await super.insertEx(Requests.Validate, request)) !== void 0;
-  }
-
-  /**
-   * Cancel the transaction that corresponds to the specified request.
-   * @param request Transaction cancel request.
-   * @returns Returns a promise to get true when operation was successful, false otherwise.
-   */
-  @Class.Public()
-  public async cancel(request: Requests.Cancel): Promise<boolean> {
-    return (await super.insertEx(Requests.Rollback, { ...request, resolutionMode: Types.Payment.Resolution.CancellationOnly })) !== void 0;
-  }
-
-  /**
-   * Refund the transaction that corresponds to the specified request.
-   * @param request Transaction refund request.
-   * @returns Returns a promise to get true when operation was successful, false otherwise.
-   */
-  @Class.Public()
-  public async refund(request: Requests.Refund): Promise<boolean> {
-    return (await super.insertEx(Requests.Rollback, { ...request, resolutionMode: Types.Payment.Resolution.RefundOnly })) !== void 0;
-  }
-
-  /**
-   * Cancel or Refund the transaction that corresponds to the specified request.
-   * @param request Transaction rollback request.
-   * @returns Returns a promise to get true when operation was successful, false otherwise.
-   */
-  @Class.Public()
-  public async rollback(request: Requests.Rollback): Promise<boolean> {
-    return (await super.insertEx(Requests.Rollback, request)) !== void 0;
+    this.lastPayload = void 0;
+    const answer = await this.mapper.insertEx(Requests.Duplicate, request);
+    const entity = RestDB.Outputer.createFull(Entity, answer, []);
+    this.updatePayload(entity, true);
+    return true;
   }
 }

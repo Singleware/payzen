@@ -1,12 +1,14 @@
 /*!
- * Copyright (C) 2019 Silas B. Domingos
+ * Copyright (C) 2019-2020 Silas B. Domingos
  * This source code is licensed under the MIT License as described in the file LICENSE.
  */
 import * as Class from '@singleware/class';
 import * as RestDB from '@singleware/restdb';
 
-import * as Types from '../../types';
-import * as Internals from '../../internals';
+import * as Transactions from '../../transactions';
+
+import * as Types from '../types';
+import * as Internals from '../internals';
 
 /**
  * Create payment, entity class.
@@ -28,15 +30,14 @@ export class Create extends Class.Null {
    * Max 128 characters.
    */
   @RestDB.Schema.String(0, 128)
-  @RestDB.Schema.Null()
   @Class.Public()
-  public contrib?: string | null;
+  public contrib?: string;
 
   /**
    * Amount currency.
    */
   @RestDB.Schema.Required()
-  @RestDB.Schema.Enumeration(Object.values(Types.Currency))
+  @RestDB.Schema.Enumeration(() => Object.values(Types.Currency))
   @Class.Public()
   public currency!: Types.Currency;
 
@@ -45,108 +46,96 @@ export class Create extends Class.Null {
    * Integer between 0 and 999.
    */
   @RestDB.Schema.Number(0, 999)
-  @RestDB.Schema.Null()
   @Class.Public()
-  public formTokenVersion?: number | null;
+  public formTokenVersion?: number;
 
   /**
    * Target URL for event notifications about the request.
    * Max 255 characters.
    */
   @RestDB.Schema.String(0, 255)
-  @RestDB.Schema.Null()
   @Class.Public()
-  public ipnTargetUrl?: string | null;
+  public ipnTargetUrl?: string;
 
   /**
    * Request order Id.
    * Max 64 characters.
    */
   @RestDB.Schema.String(0, 64)
-  @RestDB.Schema.Null()
   @Class.Public()
-  public orderId?: string | null;
+  public orderId?: string;
 
   /**
    * Custom metadata for the request.
    */
   @RestDB.Schema.Object(Object)
-  @RestDB.Schema.Null()
   @Class.Public()
-  public metadata?: RestDB.Entity | null;
+  public metadata?: RestDB.Entity;
 
   /**
    * Request finger print.
    * Required for ClearSale analyzer, 128 characters.
    */
   @RestDB.Schema.String(128, 128)
-  @RestDB.Schema.Null()
   @Class.Public()
-  public fingerPrintId?: string | null;
+  public fingerPrintId?: string;
 
   /**
    * Request action.
    */
-  @RestDB.Schema.Enumeration(Object.values(Types.Payment.Action))
-  @RestDB.Schema.Null()
+  @RestDB.Schema.Enumeration(Object.values(Types.Action))
   @Class.Public()
-  public formAction?: Types.Payment.Action | null;
+  public formAction?: Types.Action;
 
   /**
    * Allow changes in the delivery mode.
    * Between 6 and 17 characters.
    */
   @RestDB.Schema.String(6, 17)
-  @RestDB.Schema.Null()
   @Class.Public()
-  public overridePaymentCinematic?: string | null;
+  public overridePaymentCinematic?: string;
 
   /**
    * Pre-saved card token.
    * Max 32 characters.
    */
   @RestDB.Schema.String(1, 32)
-  @RestDB.Schema.Null()
   @Class.Public()
-  public paymentMethodToken?: string | null;
+  public paymentMethodToken?: string;
 
   /**
    * Determines whether the request will use strong authentication or not.
    */
-  @RestDB.Schema.Enumeration(Object.values(Types.Authentication.Strong))
-  @RestDB.Schema.Null()
+  @RestDB.Schema.Enumeration(() => Object.values(Transactions.Types.StrongAuthentication))
   @Class.Public()
-  public strongAuthentication?: Types.Authentication.Strong | null;
+  public strongAuthentication?: Transactions.Types.StrongAuthentication;
 
   /**
    * Custom data to the acquirer.
    */
   @RestDB.Schema.Object(Object)
-  @RestDB.Schema.Null()
   @Class.Public()
-  public acquirerTransientData?: RestDB.Entity | null;
+  public acquirerTransientData?: RestDB.Entity;
 
   /**
    * Customer details.
    */
   @RestDB.Schema.Required()
-  @RestDB.Schema.Object(Internals.Entities.Customer)
+  @RestDB.Schema.Object(Internals.Customer)
   @Class.Public()
-  public customer!: Internals.Entities.Customer;
+  public customer!: Internals.Customer;
 
   /**
    * Transaction options.
    */
-  @RestDB.Schema.Object(Internals.Entities.Transaction.Complete)
-  @RestDB.Schema.Null()
+  @RestDB.Schema.Object(() => Transactions.Internals.Options)
   @Class.Public()
-  public transactionOptions?: Internals.Entities.Transaction.Complete | null;
+  public transactionOptions?: Transactions.Internals.Options;
 
   /**
    * Payment forms.
    */
-  @RestDB.Schema.Array(Internals.Entities.Payment.Complete, [], true, 0, 1)
-  @RestDB.Schema.Null()
+  @RestDB.Schema.Array(Internals.Form, [], true, 0, 1)
   @Class.Public()
-  public paymentForms?: Internals.Entities.Payment.Complete[] | null;
+  public paymentForms?: Internals.Form[];
 }

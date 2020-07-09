@@ -1,19 +1,9 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 /*!
- * Copyright (C) 2019 Silas B. Domingos
+ * Copyright (C) 2019-2020 Silas B. Domingos
  * This source code is licensed under the MIT License as described in the file LICENSE.
  */
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Entities = exports.Parsers = void 0;
-// Imported aliases.
-const Parsers = require("./parsers");
-const Entities = require("./entities");
-/**
- * Parsers namespace.
- */
-exports.Parsers = Parsers;
-/**
- * Entities namespace.
- */
-exports.Entities = Entities;
+var customer_1 = require("./customer");
+Object.defineProperty(exports, "Customer", { enumerable: true, get: function () { return customer_1.Customer; } });
 //# sourceMappingURL=index.js.map

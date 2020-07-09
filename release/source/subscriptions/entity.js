@@ -8,7 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Entity = void 0;
 /*!
- * Copyright (C) 2019 Silas B. Domingos
+ * Copyright (C) 2019-2020 Silas B. Domingos
  * This source code is licensed under the MIT License as described in the file LICENSE.
  */
 const Class = require("@singleware/class");
@@ -25,13 +25,23 @@ __decorate([
     Class.Public()
 ], Entity.prototype, "subscriptionId", void 0);
 __decorate([
+    RestDB.Schema.Required(),
+    RestDB.Schema.String(8, 8),
+    Class.Public()
+], Entity.prototype, "shopId", void 0);
+__decorate([
+    RestDB.Schema.String(0, 64),
+    RestDB.Schema.Null(),
+    Class.Public()
+], Entity.prototype, "orderId", void 0);
+__decorate([
     RestDB.Schema.Date(),
     RestDB.Schema.Null(),
     Class.Public()
 ], Entity.prototype, "cancelDate", void 0);
 __decorate([
-    RestDB.Schema.Required(),
     RestDB.Schema.Date(),
+    RestDB.Schema.Null(),
     Class.Public()
 ], Entity.prototype, "effectDate", void 0);
 __decorate([
@@ -55,18 +65,8 @@ __decorate([
     Class.Public()
 ], Entity.prototype, "metadata", void 0);
 __decorate([
-    RestDB.Schema.Required(),
-    RestDB.Schema.String(8, 8),
-    Class.Public()
-], Entity.prototype, "shopId", void 0);
-__decorate([
-    RestDB.Schema.String(0, 64),
-    RestDB.Schema.Null(),
-    Class.Public()
-], Entity.prototype, "orderId", void 0);
-__decorate([
-    RestDB.Schema.Required(),
     RestDB.Schema.Integer(0, 999999),
+    RestDB.Schema.Null(),
     Class.Public()
 ], Entity.prototype, "pastPaymentsNumber", void 0);
 __decorate([
@@ -75,13 +75,13 @@ __decorate([
     Class.Public()
 ], Entity.prototype, "totalPaymentsNumber", void 0);
 __decorate([
-    RestDB.Schema.Required(),
     RestDB.Schema.String(32, 32),
+    RestDB.Schema.Null(),
     Class.Public()
 ], Entity.prototype, "paymentMethodToken", void 0);
 __decorate([
-    RestDB.Schema.Required(),
     RestDB.Schema.String(0, 255),
+    RestDB.Schema.Null(),
     Class.Public()
 ], Entity.prototype, "rrule", void 0);
 Entity = __decorate([

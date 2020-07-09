@@ -1,5 +1,5 @@
 /*!
- * Copyright (C) 2019 Silas B. Domingos
+ * Copyright (C) 2019-2020 Silas B. Domingos
  * This source code is licensed under the MIT License as described in the file LICENSE.
  */
 import * as Class from '@singleware/class';
@@ -22,6 +22,24 @@ export class Entity extends Class.Null {
   public subscriptionId!: string;
 
   /**
+   * Subscription shop Id.
+   * Use 8 characters.
+   */
+  @RestDB.Schema.Required()
+  @RestDB.Schema.String(8, 8)
+  @Class.Public()
+  public shopId!: string;
+
+  /**
+   * Subscription order Id.
+   * Max 64 characters.
+   */
+  @RestDB.Schema.String(0, 64)
+  @RestDB.Schema.Null()
+  @Class.Public()
+  public orderId?: string | null;
+
+  /**
    * Cancel date.
    */
   @RestDB.Schema.Date()
@@ -32,10 +50,10 @@ export class Entity extends Class.Null {
   /**
    * Effect date.
    */
-  @RestDB.Schema.Required()
   @RestDB.Schema.Date()
+  @RestDB.Schema.Null()
   @Class.Public()
-  public effectDate!: Date;
+  public effectDate?: Date | null;
 
   /**
    * Description.
@@ -73,31 +91,13 @@ export class Entity extends Class.Null {
   public metadata?: RestDB.Entity | null;
 
   /**
-   * Subscription shop Id.
-   * Use 8 characters.
-   */
-  @RestDB.Schema.Required()
-  @RestDB.Schema.String(8, 8)
-  @Class.Public()
-  public shopId!: string;
-
-  /**
-   * Subscription order Id.
-   * Max 64 characters.
-   */
-  @RestDB.Schema.String(0, 64)
-  @RestDB.Schema.Null()
-  @Class.Public()
-  public orderId?: string | null;
-
-  /**
    * Finalized payments.
    * Integer between 0 and 999999 digits.
    */
-  @RestDB.Schema.Required()
   @RestDB.Schema.Integer(0, 999999)
+  @RestDB.Schema.Null()
   @Class.Public()
-  public pastPaymentsNumber!: number;
+  public pastPaymentsNumber?: number | null;
 
   /**
    * Total payments.
@@ -112,18 +112,18 @@ export class Entity extends Class.Null {
    * Card token.
    * Use 32 characters.
    */
-  @RestDB.Schema.Required()
   @RestDB.Schema.String(32, 32)
+  @RestDB.Schema.Null()
   @Class.Public()
-  public paymentMethodToken!: string;
+  public paymentMethodToken?: string | null;
 
   /**
    * Recurrence rule.
    * Max 255 characters.
    * @see https://www.nylas.com/blog/calendar-events-rrules/
    */
-  @RestDB.Schema.Required()
   @RestDB.Schema.String(0, 255)
+  @RestDB.Schema.Null()
   @Class.Public()
-  public rrule!: string;
+  public rrule?: string | null;
 }

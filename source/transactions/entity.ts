@@ -1,12 +1,15 @@
 /*!
- * Copyright (C) 2019 Silas B. Domingos
+ * Copyright (C) 2019-2020 Silas B. Domingos
  * This source code is licensed under the MIT License as described in the file LICENSE.
  */
 import * as Class from '@singleware/class';
 import * as RestDB from '@singleware/restdb';
 
-import * as Types from '../types';
-import * as Internals from '../internals';
+import * as Payments from '../payments';
+import * as Order from '../orders';
+
+import * as Types from './types';
+import * as Internals from './internals';
 
 /**
  * Transaction entity class.
@@ -53,33 +56,33 @@ export class Entity extends Class.Null {
    * Status.
    */
   @RestDB.Schema.Required()
-  @RestDB.Schema.Enumeration(Object.values(Types.Transaction.Status))
+  @RestDB.Schema.Enumeration(Object.values(Types.Status))
   @Class.Public()
-  public status!: Types.Transaction.Status;
+  public status!: Types.Status;
 
   /**
    * Detailed status.
    */
   @RestDB.Schema.Required()
-  @RestDB.Schema.Enumeration(Object.values(Types.Transaction.State))
+  @RestDB.Schema.Enumeration(Object.values(Types.DetailedStatus))
   @Class.Public()
-  public detailedStatus!: Types.Transaction.State;
+  public detailedStatus!: Types.DetailedStatus;
 
   /**
    * Order details.
    */
   @RestDB.Schema.Required()
-  @RestDB.Schema.Object(Internals.Entities.Order.Details)
+  @RestDB.Schema.Object(() => Order.Internals.Details)
   @Class.Public()
-  public orderDetails!: Internals.Entities.Order.Details;
+  public orderDetails!: Order.Internals.Details;
 
   /**
    * Customer details.
    */
   @RestDB.Schema.Required()
-  @RestDB.Schema.Object(Internals.Entities.Customer)
+  @RestDB.Schema.Object(Internals.Customer)
   @Class.Public()
-  public customer!: Internals.Entities.Customer;
+  public customer!: Internals.Customer;
 
   /**
    * Error code.
@@ -121,17 +124,17 @@ export class Entity extends Class.Null {
    * Effective strong authentication.
    */
   @RestDB.Schema.Required()
-  @RestDB.Schema.Enumeration(Object.values(Types.Authentication.Strong))
+  @RestDB.Schema.Enumeration(Object.values(Types.StrongAuthentication))
   @Class.Public()
-  public effectiveStrongAuthentication?: Types.Authentication.Strong;
+  public effectiveStrongAuthentication?: Types.StrongAuthentication;
 
   /**
    * Operation type.
    */
   @RestDB.Schema.Required()
-  @RestDB.Schema.Enumeration(Object.values(Types.Transaction.Mode))
+  @RestDB.Schema.Enumeration(Object.values(Types.Operation))
   @Class.Public()
-  public operationType!: Types.Transaction.Mode;
+  public operationType!: Types.Operation;
 
   /**
    * Card token.
@@ -146,9 +149,9 @@ export class Entity extends Class.Null {
    * Payment method type.
    */
   @RestDB.Schema.Required()
-  @RestDB.Schema.Enumeration(Object.values(Types.Payment.Method))
+  @RestDB.Schema.Enumeration(() => Object.values(Payments.Types.Method))
   @Class.Public()
-  public paymentMethodType!: Types.Payment.Method;
+  public paymentMethodType!: Payments.Types.Method;
 
   /**
    * Shop Id.
@@ -163,7 +166,7 @@ export class Entity extends Class.Null {
    * Transaction details.
    */
   @RestDB.Schema.Required()
-  @RestDB.Schema.Object(Internals.Entities.Transaction.Details)
+  @RestDB.Schema.Object(Internals.Details)
   @Class.Public()
-  public transactionDetails!: Internals.Entities.Transaction.Details;
+  public transactionDetails!: Internals.Details;
 }

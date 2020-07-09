@@ -8,12 +8,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Update = void 0;
 /*!
- * Copyright (C) 2019 Silas B. Domingos
+ * Copyright (C) 2019-2020 Silas B. Domingos
  * This source code is licensed under the MIT License as described in the file LICENSE.
  */
 const Class = require("@singleware/class");
 const RestDB = require("@singleware/restdb");
-const Internals = require("../../internals");
+const Internals = require("../internals");
 /**
  * Update transaction, entity class.
  */
@@ -27,12 +27,10 @@ __decorate([
 ], Update.prototype, "uuid", void 0);
 __decorate([
     RestDB.Schema.String(0, 255),
-    RestDB.Schema.Null(),
     Class.Public()
 ], Update.prototype, "comment", void 0);
 __decorate([
-    RestDB.Schema.Object(Internals.Entities.Transaction.Update),
-    RestDB.Schema.Null(),
+    RestDB.Schema.Object(Internals.Card.Update),
     Class.Public()
 ], Update.prototype, "cardUpdate", void 0);
 Update = __decorate([

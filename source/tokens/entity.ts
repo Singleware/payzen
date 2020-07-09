@@ -1,12 +1,13 @@
 /*!
- * Copyright (C) 2019 Silas B. Domingos
+ * Copyright (C) 2019-2020 Silas B. Domingos
  * This source code is licensed under the MIT License as described in the file LICENSE.
  */
 import * as Class from '@singleware/class';
 import * as RestDB from '@singleware/restdb';
 
-import * as Types from '../types';
-import * as Internals from '../internals';
+import * as Payments from '../payments';
+
+import * as Internals from './internals';
 
 /**
  * Token entity class.
@@ -44,23 +45,23 @@ export class Entity extends Class.Null {
    * Payment method type.
    */
   @RestDB.Schema.Required()
-  @RestDB.Schema.Enumeration(Object.values(Types.Payment.Method))
+  @RestDB.Schema.Enumeration(() => Object.values(Payments.Types.Method))
   @Class.Public()
-  public paymentMethodType!: Types.Payment.Method;
+  public paymentMethodType!: Payments.Types.Method;
 
   /**
    * Customer details.
    */
   @RestDB.Schema.Required()
-  @RestDB.Schema.Object(Internals.Entities.Customer)
+  @RestDB.Schema.Object(Internals.Customer)
   @Class.Public()
-  public customer!: Internals.Entities.Customer;
+  public customer!: Internals.Customer;
 
   /**
    * Token details.
    */
   @RestDB.Schema.Required()
-  @RestDB.Schema.Object(Internals.Entities.Token.Details)
+  @RestDB.Schema.Object(Internals.Details)
   @Class.Public()
-  public tokenDetails!: Internals.Entities.Token.Details;
+  public tokenDetails!: Internals.Details;
 }

@@ -8,7 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Entity = void 0;
 /*!
- * Copyright (C) 2019 Silas B. Domingos
+ * Copyright (C) 2019-2020 Silas B. Domingos
  * This source code is licensed under the MIT License as described in the file LICENSE.
  */
 const Class = require("@singleware/class");
@@ -19,7 +19,7 @@ const RestDB = require("@singleware/restdb");
 let Entity = class Entity extends Class.Null {
 };
 Entity = __decorate([
-    RestDB.Schema.Entity('test'),
+    RestDB.Schema.Entity('Test'),
     Class.Describe()
 ], Entity);
 exports.Entity = Entity;

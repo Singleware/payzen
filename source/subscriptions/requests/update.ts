@@ -1,12 +1,13 @@
 /*!
- * Copyright (C) 2019 Silas B. Domingos
+ * Copyright (C) 2019-2020 Silas B. Domingos
  * This source code is licensed under the MIT License as described in the file LICENSE.
  */
 import * as Class from '@singleware/class';
 import * as RestDB from '@singleware/restdb';
 
+import * as Transactions from '../../transactions';
+
 import * as Types from '../../types';
-import * as Internals from '../../internals';
 
 /**
  * Update subscription, entity class.
@@ -95,7 +96,7 @@ export class Update extends Class.Null {
   /**
    * Transaction options.
    */
-  @RestDB.Schema.Object(Internals.Entities.Transaction.Complete)
+  @RestDB.Schema.Object(() => Transactions.Internals.Options)
   @Class.Public()
-  public transactionOptions?: Internals.Entities.Transaction.Complete;
+  public transactionOptions?: Transactions.Internals.Options;
 }

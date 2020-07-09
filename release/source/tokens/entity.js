@@ -8,13 +8,13 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Entity = void 0;
 /*!
- * Copyright (C) 2019 Silas B. Domingos
+ * Copyright (C) 2019-2020 Silas B. Domingos
  * This source code is licensed under the MIT License as described in the file LICENSE.
  */
 const Class = require("@singleware/class");
 const RestDB = require("@singleware/restdb");
-const Types = require("../types");
-const Internals = require("../internals");
+const Payments = require("../payments");
+const Internals = require("./internals");
 /**
  * Token entity class.
  */
@@ -38,17 +38,17 @@ __decorate([
 ], Entity.prototype, "creationDate", void 0);
 __decorate([
     RestDB.Schema.Required(),
-    RestDB.Schema.Enumeration(Object.values(Types.Payment.Method)),
+    RestDB.Schema.Enumeration(() => Object.values(Payments.Types.Method)),
     Class.Public()
 ], Entity.prototype, "paymentMethodType", void 0);
 __decorate([
     RestDB.Schema.Required(),
-    RestDB.Schema.Object(Internals.Entities.Customer),
+    RestDB.Schema.Object(Internals.Customer),
     Class.Public()
 ], Entity.prototype, "customer", void 0);
 __decorate([
     RestDB.Schema.Required(),
-    RestDB.Schema.Object(Internals.Entities.Token.Details),
+    RestDB.Schema.Object(Internals.Details),
     Class.Public()
 ], Entity.prototype, "tokenDetails", void 0);
 Entity = __decorate([

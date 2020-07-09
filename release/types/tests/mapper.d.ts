@@ -1,19 +1,25 @@
-import * as RestDB from '@singleware/restdb';
+/*!
+ * Copyright (C) 2019-2020 Silas B. Domingos
+ * This source code is licensed under the MIT License as described in the file LICENSE.
+ */
+import * as Class from '@singleware/class';
 import * as Requests from './requests';
-import { Entity } from './entity';
 /**
  * Test mapper class.
  */
-export declare class Mapper extends RestDB.Mapper<Entity> {
+export declare class Mapper extends Class.Null {
     /**
-     * Default constructor.
-     * @param dependencies Mapper dependencies.
+     * Client instance.
      */
-    constructor(dependencies: any);
+    private client;
     /**
-     * Creates a new test request.
+     * Mapper instance.
+     */
+    private mapper;
+    /**
+     * Send a test request.
      * @param request Test creation request.
-     * @returns Returns a promise to get the test value or undefined when the operation has been failed.
+     * @returns Returns a promise to get true when the test response is valid, false otherwise.
      */
-    create(request: Requests.Create): Promise<string | undefined>;
+    send(request: Requests.Send): Promise<boolean>;
 }

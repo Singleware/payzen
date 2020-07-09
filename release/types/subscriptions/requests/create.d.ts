@@ -1,11 +1,11 @@
 /*!
- * Copyright (C) 2019 Silas B. Domingos
+ * Copyright (C) 2019-2020 Silas B. Domingos
  * This source code is licensed under the MIT License as described in the file LICENSE.
  */
 import * as Class from '@singleware/class';
 import * as RestDB from '@singleware/restdb';
+import * as Transactions from '../../transactions';
 import * as Types from '../../types';
-import * as Internals from '../../internals';
 /**
  * Create subscription, entity class.
  */
@@ -23,12 +23,12 @@ export declare class Create extends Class.Null {
      * Subscription comment.
      * Max 255 characters.
      */
-    comment?: string | null;
+    comment?: string;
     /**
      * Subscription description.
      * Max 255 characters.
      */
-    description?: string | null;
+    description?: string;
     /**
      * Subscription effect date.
      */
@@ -37,21 +37,21 @@ export declare class Create extends Class.Null {
      * Initial amount used for the first installment.
      * Max 12 integer digits.
      */
-    initialAmount?: number | null;
+    initialAmount?: number;
     /**
      * Initial amount installment number.
      * Integer between 0 and 999 digits.
      */
-    initialAmountNumber?: number | null;
+    initialAmountNumber?: number;
     /**
      * Request order Id.
      * Max 64 characters.
      */
-    orderId?: string | null;
+    orderId?: string;
     /**
      * Custom metadata for the request.
      */
-    metadata?: RestDB.Entity | null;
+    metadata?: RestDB.Entity;
     /**
      * Card token.
      * Use 32 characters.
@@ -66,5 +66,5 @@ export declare class Create extends Class.Null {
     /**
      * Transaction options.
      */
-    transactionOptions?: Internals.Entities.Transaction.Complete | null;
+    transactionOptions?: Transactions.Internals.Options;
 }

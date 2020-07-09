@@ -1,5 +1,5 @@
 /*!
- * Copyright (C) 2019 Silas B. Domingos
+ * Copyright (C) 2019-2020 Silas B. Domingos
  * This source code is licensed under the MIT License as described in the file LICENSE.
  */
 import * as Class from '@singleware/class';
@@ -17,20 +17,32 @@ import { Entity } from './entity';
 @Injection.Inject(Client)
 @Injection.Describe({ singleton: true, name: 'order' })
 @Class.Describe()
-export class Mapper extends RestDB.Mapper<Entity> {
+export class Mapper extends Class.Null {
+  /**
+   * Last response payload.
+   */
+  @Class.Private()
+  private lastPayload?: Entity;
+
   /**
    * Client instance.
    */
+  @Injection.Inject(() => Client)
   @Class.Private()
   private client!: Client;
 
   /**
-   * Default constructor.
-   * @param dependencies Mapper dependencies.
+   * Mapper instance.
    */
-  constructor(dependencies: any) {
-    super(dependencies.client, Entity);
-    this.client = dependencies.client;
+  @Class.Private()
+  private mapper = new RestDB.Mapper<Entity>(this.client, Entity);
+
+  /**
+   * Get the last request payload.
+   */
+  @Class.Public()
+  public get payload(): Entity | undefined {
+    return this.lastPayload;
   }
 
   /**
@@ -40,8 +52,9 @@ export class Mapper extends RestDB.Mapper<Entity> {
    */
   @Class.Public()
   public async load(request: Requests.Get): Promise<Entity | undefined> {
-    if ((await super.insertEx(Requests.Get, request)) !== void 0) {
-      return RestDB.Outputer.createFull(Entity, (<RestDB.Entity>this.client.payload).answer, []);
-    }
+    this.lastPayload = void 0;
+    const answer = await this.mapper.insertEx(Requests.Get, request);
+    this.lastPayload = RestDB.Outputer.createFull(Entity, answer, []);
+    return this.lastPayload;
   }
 }

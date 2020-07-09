@@ -1,11 +1,11 @@
 /*!
- * Copyright (C) 2019 Silas B. Domingos
+ * Copyright (C) 2019-2020 Silas B. Domingos
  * This source code is licensed under the MIT License as described in the file LICENSE.
  */
 import * as Class from '@singleware/class';
 import * as RestDB from '@singleware/restdb';
-import * as Types from '../../types';
-import * as Internals from '../../internals';
+import * as Types from '../types';
+import * as Internals from '../internals';
 /**
  * Duplicate transaction, entity class.
  */
@@ -28,18 +28,18 @@ export declare class Duplicate extends Class.Null {
      * Updating comment.
      * Max 255 characters.
      */
-    comment?: string | null;
+    comment?: string;
     /**
      * Request order Id.
      * Max 64 characters.
      */
-    orderId?: string | null;
+    orderId?: string;
     /**
      * Custom metadata for the request.
      */
-    metadata?: RestDB.Entity | null;
+    metadata?: RestDB.Entity;
     /**
      * Card payment duplicate.
      */
-    cardDuplicate?: Internals.Entities.Transaction.Duplicate | null;
+    cardDuplicate?: Internals.Card.Duplicate;
 }

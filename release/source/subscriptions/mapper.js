@@ -8,7 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Mapper = void 0;
 /*!
- * Copyright (C) 2019 Silas B. Domingos
+ * Copyright (C) 2019-2020 Silas B. Domingos
  * This source code is licensed under the MIT License as described in the file LICENSE.
  */
 const Class = require("@singleware/class");
@@ -20,14 +20,30 @@ const entity_1 = require("./entity");
 /**
  * Subscription mapper class.
  */
-let Mapper = class Mapper extends RestDB.Mapper {
+let Mapper = class Mapper extends Class.Null {
+    constructor() {
+        super(...arguments);
+        /**
+         * Mapper instance.
+         */
+        this.mapper = new RestDB.Mapper(this.client, entity_1.Entity);
+    }
     /**
-     * Default constructor.
-     * @param dependencies Mapper dependencies.
+     * Get the last request payload.
      */
-    constructor(dependencies) {
-        super(dependencies.client, entity_1.Entity);
-        this.client = dependencies.client;
+    get payload() {
+        return this.lastPayload;
+    }
+    /**
+     * Create a new subscription request.
+     * @param request Subscription creation request.
+     * @returns Returns a promise to get the subscription Id.
+     * @throws Throws an error when the server response is invalid.
+     */
+    async create(request) {
+        this.lastPayload = void 0;
+        const answer = await this.mapper.insertEx(Requests.Create, request);
+        return answer.subscriptionId;
     }
     /**
      * Load the subscription that corresponds to the specified request.
@@ -35,17 +51,10 @@ let Mapper = class Mapper extends RestDB.Mapper {
      * @returns Returns a promise to get the subscription entity or undefined when the subscription was not found.
      */
     async load(request) {
-        if ((await super.insertEx(Requests.Get, request)) !== void 0) {
-            return RestDB.Outputer.createFull(entity_1.Entity, this.client.payload.answer, []);
-        }
-    }
-    /**
-     * Creates a new subscription request.
-     * @param request Subscription creation request.
-     * @returns Returns a promise to get the subscription Id or undefined when the operation has been failed.
-     */
-    async create(request) {
-        return await super.insertEx(Requests.Create, request);
+        this.lastPayload = void 0;
+        const answer = await this.mapper.insertEx(Requests.Get, request);
+        this.lastPayload = RestDB.Outputer.createFull(entity_1.Entity, answer, []);
+        return this.lastPayload;
     }
     /**
      * Update the subscription that corresponds to the specified request.
@@ -53,7 +62,9 @@ let Mapper = class Mapper extends RestDB.Mapper {
      * @returns Returns a promise to get true when operation was successful, false otherwise.
      */
     async modify(request) {
-        return (await super.insertEx(Requests.Update, request)) !== void 0;
+        this.lastPayload = void 0;
+        const answer = await this.mapper.insertEx(Requests.Update, request);
+        return answer.responseCode === 0;
     }
     /**
      * Cancel the subscription that corresponds to the specified request.
@@ -61,18 +72,30 @@ let Mapper = class Mapper extends RestDB.Mapper {
      * @returns Returns a promise to get true when operation was successful, false otherwise.
      */
     async cancel(request) {
-        return (await super.insertEx(Requests.Cancel, request)) !== void 0;
+        this.lastPayload = void 0;
+        const answer = await this.mapper.insertEx(Requests.Cancel, request);
+        return answer.responseCode === 0;
     }
 };
 __decorate([
     Class.Private()
+], Mapper.prototype, "lastPayload", void 0);
+__decorate([
+    Injection.Inject(() => client_1.Client),
+    Class.Private()
 ], Mapper.prototype, "client", void 0);
 __decorate([
+    Class.Private()
+], Mapper.prototype, "mapper", void 0);
+__decorate([
     Class.Public()
-], Mapper.prototype, "load", null);
+], Mapper.prototype, "payload", null);
 __decorate([
     Class.Public()
 ], Mapper.prototype, "create", null);
+__decorate([
+    Class.Public()
+], Mapper.prototype, "load", null);
 __decorate([
     Class.Public()
 ], Mapper.prototype, "modify", null);

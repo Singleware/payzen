@@ -7,28 +7,28 @@ Rest client for the PayZen gateway, for more info, please check the [Official Do
 Authorizing the connection.
 
 ```ts
-import * as Payzen from '@singleware/payzen';
+import * as PayZen from '@singleware/payzen';
 import * as Injection from '@singleware/injection';
 
 // Basic authorization.
-Injection.resolve(Payzen.Client).setAuthorization('USER', 'SECRET');
+Injection.resolve(PayZen.Client).setAuthorization('USER', 'SECRET');
 ```
 
 Creating new credit card token.
 
 ```ts
-import * as Payzen from '@singleware/payzen';
+import * as PayZen from '@singleware/payzen';
 import * as Injection from '@singleware/injection';
 
 // Getting a promise to receive the credit card token.
-const promise = Injection.resolve(Payzen.Tokens.Mapper).create({
-  currency: Payzen.Types.Currency.BRL,
+const promise = Injection.resolve(PayZen.Tokens.Mapper).create({
+  currency: PayZen.Types.Currency.BRL,
   customer: {
     email: 'customer@email.br'
   },
   paymentForms: [
     {
-      paymentMethodType: Payzen.Types.Payment.Method.Card,
+      paymentMethodType: PayZen.Types.Payment.Method.Card,
       pan: 'CARD_NUMBER',
       expiryMonth: 'CARD_MONTH',
       expiryYear: 'CARD_YEAR',
@@ -41,13 +41,13 @@ const promise = Injection.resolve(Payzen.Tokens.Mapper).create({
 Creating a new payment based on the received card token.
 
 ```ts
-import * as Payzen from '@singleware/payzen';
+import * as PayZen from '@singleware/payzen';
 import * as Injection from '@singleware/injection';
 
 // Getting a promise to receive the payment uuid.
-const promise = Injection.resolve(Payzen.Payments.Mapper).create({
+const promise = Injection.resolve(PayZen.Payments.Mapper).create({
   amount: 1000,
-  currency: Payzen.Types.Currency.BRL,
+  currency: PayZen.Types.Currency.BRL,
   paymentMethodToken: 'CARD_TOKEN',
   customer: {
     email: 'customer@email.br'
@@ -58,13 +58,13 @@ const promise = Injection.resolve(Payzen.Payments.Mapper).create({
 Creating a new subscription based on the received card token.
 
 ```ts
-import * as Payzen from '@singleware/payzen';
+import * as PayZen from '@singleware/payzen';
 import * as Injection from '@singleware/injection';
 
 // Getting a promise to receive the subscription id.
-const promise = Injection.resolve(Payzen.Payments.Mapper).create({
+const promise = Injection.resolve(PayZen.Payments.Mapper).create({
   amount: 1000,
-  currency: Payzen.Types.Currency.BRL,
+  currency: PayZen.Types.Currency.BRL,
   effectDate: new Date(),
   paymentMethodToken: 'CARD_TOKEN',
   rrule: 'RRULE:FREQ=MONTHLY;BYMONTHDAY=1;COUNT=1',

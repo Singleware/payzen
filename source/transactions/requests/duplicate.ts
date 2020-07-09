@@ -1,12 +1,12 @@
 /*!
- * Copyright (C) 2019 Silas B. Domingos
+ * Copyright (C) 2019-2020 Silas B. Domingos
  * This source code is licensed under the MIT License as described in the file LICENSE.
  */
 import * as Class from '@singleware/class';
 import * as RestDB from '@singleware/restdb';
 
-import * as Types from '../../types';
-import * as Internals from '../../internals';
+import * as Types from '../types';
+import * as Internals from '../internals';
 
 /**
  * Duplicate transaction, entity class.
@@ -46,32 +46,28 @@ export class Duplicate extends Class.Null {
    * Max 255 characters.
    */
   @RestDB.Schema.String(0, 255)
-  @RestDB.Schema.Null()
   @Class.Public()
-  public comment?: string | null;
+  public comment?: string;
 
   /**
    * Request order Id.
    * Max 64 characters.
    */
   @RestDB.Schema.String(0, 64)
-  @RestDB.Schema.Null()
   @Class.Public()
-  public orderId?: string | null;
+  public orderId?: string;
 
   /**
    * Custom metadata for the request.
    */
   @RestDB.Schema.Object(Object)
-  @RestDB.Schema.Null()
   @Class.Public()
-  public metadata?: RestDB.Entity | null;
+  public metadata?: RestDB.Entity;
 
   /**
    * Card payment duplicate.
    */
-  @RestDB.Schema.Object(Internals.Entities.Transaction.Duplicate)
-  @RestDB.Schema.Null()
+  @RestDB.Schema.Object(Internals.Card.Duplicate)
   @Class.Public()
-  public cardDuplicate?: Internals.Entities.Transaction.Duplicate | null;
+  public cardDuplicate?: Internals.Card.Duplicate;
 }

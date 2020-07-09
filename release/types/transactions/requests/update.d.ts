@@ -1,9 +1,9 @@
 /*!
- * Copyright (C) 2019 Silas B. Domingos
+ * Copyright (C) 2019-2020 Silas B. Domingos
  * This source code is licensed under the MIT License as described in the file LICENSE.
  */
 import * as Class from '@singleware/class';
-import * as Internals from '../../internals';
+import * as Internals from '../internals';
 /**
  * Update transaction, entity class.
  */
@@ -17,9 +17,9 @@ export declare class Update extends Class.Null {
      * Updating comment.
      * Max 255 characters.
      */
-    comment?: string | null;
+    comment?: string;
     /**
      * Card payment update.
      */
-    cardUpdate?: Internals.Entities.Transaction.Update | null;
+    cardUpdate?: Internals.Card.Update;
 }
