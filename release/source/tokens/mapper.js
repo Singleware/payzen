@@ -67,7 +67,7 @@ let Mapper = class Mapper extends Class.Null {
     async create(request) {
         var _a;
         this.lastPayload = void 0;
-        const answer = await this.mapper.insertEx(Requests.Create, request);
+        const answer = (await this.mapper.insertEx(Requests.Create, request));
         if (answer.formToken === void 0) {
             const entity = RestDB.Outputer.createFull(Payments.Entity, answer, []);
             return (_a = this.updatePayload(entity.transactions[0], true)) === null || _a === void 0 ? void 0 : _a.paymentMethodToken;
@@ -83,7 +83,7 @@ let Mapper = class Mapper extends Class.Null {
     async from(request) {
         var _a;
         this.lastPayload = void 0;
-        const answer = await this.mapper.insertEx(Requests.Transaction, request);
+        const answer = (await this.mapper.insertEx(Requests.Transaction, request));
         const entity = RestDB.Outputer.createFull(entity_1.Entity, answer, []);
         return (_a = this.updatePayload(entity, true)) === null || _a === void 0 ? void 0 : _a.paymentMethodToken;
     }
@@ -95,8 +95,11 @@ let Mapper = class Mapper extends Class.Null {
     async load(request) {
         this.lastPayload = void 0;
         const answer = await this.mapper.insertEx(Requests.Get, request);
-        const entity = RestDB.Outputer.createFull(entity_1.Entity, answer, []);
-        return this.updatePayload(entity);
+        if (answer !== void 0) {
+            const entity = RestDB.Outputer.createFull(entity_1.Entity, answer, []);
+            return this.updatePayload(entity);
+        }
+        return void 0;
     }
     /**
      * Cancel the token that corresponds to the specified request.
@@ -106,7 +109,10 @@ let Mapper = class Mapper extends Class.Null {
     async cancel(request) {
         this.lastPayload = void 0;
         const answer = await this.mapper.insertEx(Requests.Cancel, request);
-        return answer.responseCode === 0;
+        if (answer !== void 0) {
+            return answer.responseCode === 0;
+        }
+        return false;
     }
     /**
      * Reactivate the token that corresponds to the specified request.
@@ -116,7 +122,10 @@ let Mapper = class Mapper extends Class.Null {
     async reactivate(request) {
         this.lastPayload = void 0;
         const answer = await this.mapper.insertEx(Requests.Reactivate, request);
-        return answer.responseCode === 0;
+        if (answer !== void 0) {
+            return answer.responseCode === 0;
+        }
+        return false;
     }
 };
 __decorate([

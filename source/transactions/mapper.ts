@@ -76,9 +76,12 @@ export class Mapper extends Class.Null {
   @Class.Public()
   public async load(request: Requests.Get): Promise<Entity | undefined> {
     this.lastPayload = void 0;
-    const answer = await this.mapper.insertEx(Requests.Get, request);
-    const entity = RestDB.Outputer.createFull(Entity, answer, []);
-    return this.updatePayload(entity);
+    const answer = await this.mapper.insertEx<Requests.Get, Entity>(Requests.Get, request);
+    if (answer !== void 0) {
+      const entity = RestDB.Outputer.createFull(Entity, answer, []);
+      return this.updatePayload(entity);
+    }
+    return void 0;
   }
 
   /**
@@ -89,10 +92,13 @@ export class Mapper extends Class.Null {
   @Class.Public()
   public async modify(request: Requests.Update): Promise<boolean> {
     this.lastPayload = void 0;
-    const answer = await this.mapper.insertEx(Requests.Update, request);
-    const entity = RestDB.Outputer.createFull(Entity, answer, []);
-    this.updatePayload(entity);
-    return true;
+    const answer = await this.mapper.insertEx<Requests.Update, Entity>(Requests.Update, request);
+    if (answer !== void 0) {
+      const entity = RestDB.Outputer.createFull(Entity, answer, []);
+      this.updatePayload(entity);
+      return true;
+    }
+    return false;
   }
 
   /**
@@ -103,8 +109,11 @@ export class Mapper extends Class.Null {
   @Class.Public()
   public async capture(request: Requests.Capture): Promise<boolean> {
     this.lastPayload = void 0;
-    const answer = await this.mapper.insertEx(Requests.Capture, request);
-    return answer.responseCode === 0;
+    const answer = await this.mapper.insertEx<Requests.Capture, { responseCode: number }>(Requests.Capture, request);
+    if (answer !== void 0) {
+      return answer.responseCode === 0;
+    }
+    return false;
   }
 
   /**
@@ -116,10 +125,13 @@ export class Mapper extends Class.Null {
   @Class.Public()
   public async validate(request: Requests.Validate): Promise<boolean> {
     this.lastPayload = void 0;
-    const answer = await this.mapper.insertEx(Requests.Validate, request);
-    const entity = RestDB.Outputer.createFull(Entity, answer, []);
-    this.updatePayload(entity);
-    return true;
+    const answer = await this.mapper.insertEx<Requests.Validate, Entity>(Requests.Validate, request);
+    if (answer !== void 0) {
+      const entity = RestDB.Outputer.createFull(Entity, answer, []);
+      this.updatePayload(entity);
+      return true;
+    }
+    return false;
   }
 
   /**
@@ -131,13 +143,16 @@ export class Mapper extends Class.Null {
   @Class.Public()
   public async cancel(request: Requests.Cancel): Promise<boolean> {
     this.lastPayload = void 0;
-    const answer = await this.mapper.insertEx(Requests.Rollback, {
+    const answer = await this.mapper.insertEx<Requests.Rollback, Entity>(Requests.Rollback, {
       ...request,
       resolutionMode: Types.Resolution.CancellationOnly
     });
-    const entity = RestDB.Outputer.createFull(Entity, answer, []);
-    this.updatePayload(entity, true);
-    return true;
+    if (answer !== void 0) {
+      const entity = RestDB.Outputer.createFull(Entity, answer, []);
+      this.updatePayload(entity, true);
+      return true;
+    }
+    return false;
   }
 
   /**
@@ -149,13 +164,16 @@ export class Mapper extends Class.Null {
   @Class.Public()
   public async refund(request: Requests.Refund): Promise<boolean> {
     this.lastPayload = void 0;
-    const answer = await this.mapper.insertEx(Requests.Rollback, {
+    const answer = await this.mapper.insertEx<Requests.Rollback, Entity>(Requests.Rollback, {
       ...request,
       resolutionMode: Types.Resolution.RefundOnly
     });
-    const entity = RestDB.Outputer.createFull(Entity, answer, []);
-    this.updatePayload(entity, true);
-    return true;
+    if (answer !== void 0) {
+      const entity = RestDB.Outputer.createFull(Entity, answer, []);
+      this.updatePayload(entity, true);
+      return true;
+    }
+    return false;
   }
 
   /**
@@ -167,10 +185,13 @@ export class Mapper extends Class.Null {
   @Class.Public()
   public async rollback(request: Requests.Rollback): Promise<boolean> {
     this.lastPayload = void 0;
-    const answer = await this.mapper.insertEx(Requests.Rollback, request);
-    const entity = RestDB.Outputer.createFull(Entity, answer, []);
-    this.updatePayload(entity, true);
-    return true;
+    const answer = await this.mapper.insertEx<Requests.Rollback, Entity>(Requests.Rollback, request);
+    if (answer !== void 0) {
+      const entity = RestDB.Outputer.createFull(Entity, answer, []);
+      this.updatePayload(entity, true);
+      return true;
+    }
+    return false;
   }
 
   /**
@@ -181,9 +202,12 @@ export class Mapper extends Class.Null {
   @Class.Public()
   public async duplicate(request: Requests.Duplicate): Promise<boolean> {
     this.lastPayload = void 0;
-    const answer = await this.mapper.insertEx(Requests.Duplicate, request);
-    const entity = RestDB.Outputer.createFull(Entity, answer, []);
-    this.updatePayload(entity, true);
-    return true;
+    const answer = await this.mapper.insertEx<Requests.Duplicate, Entity>(Requests.Duplicate, request);
+    if (answer !== void 0) {
+      const entity = RestDB.Outputer.createFull(Entity, answer, []);
+      this.updatePayload(entity, true);
+      return true;
+    }
+    return false;
   }
 }

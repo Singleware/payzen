@@ -66,7 +66,7 @@ let Mapper = class Mapper extends Class.Null {
     async create(request) {
         var _a;
         this.lastPayload = void 0;
-        const answer = await this.mapper.insertEx(Requests.Create, request);
+        const answer = (await this.mapper.insertEx(Requests.Create, request));
         if (answer.formToken === void 0) {
             const entity = RestDB.Outputer.createFull(entity_1.Entity, answer, []);
             return (_a = this.updatePayload(entity.transactions[0], true)) === null || _a === void 0 ? void 0 : _a.uuid;

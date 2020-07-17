@@ -42,7 +42,7 @@ let Mapper = class Mapper extends Class.Null {
      */
     async create(request) {
         this.lastPayload = void 0;
-        const answer = await this.mapper.insertEx(Requests.Create, request);
+        const answer = (await this.mapper.insertEx(Requests.Create, request));
         return answer.subscriptionId;
     }
     /**
@@ -53,8 +53,11 @@ let Mapper = class Mapper extends Class.Null {
     async load(request) {
         this.lastPayload = void 0;
         const answer = await this.mapper.insertEx(Requests.Get, request);
-        this.lastPayload = RestDB.Outputer.createFull(entity_1.Entity, answer, []);
-        return this.lastPayload;
+        if (answer !== void 0) {
+            this.lastPayload = RestDB.Outputer.createFull(entity_1.Entity, answer, []);
+            return this.lastPayload;
+        }
+        return void 0;
     }
     /**
      * Update the subscription that corresponds to the specified request.
@@ -64,7 +67,10 @@ let Mapper = class Mapper extends Class.Null {
     async modify(request) {
         this.lastPayload = void 0;
         const answer = await this.mapper.insertEx(Requests.Update, request);
-        return answer.responseCode === 0;
+        if (answer !== void 0) {
+            return answer.responseCode === 0;
+        }
+        return false;
     }
     /**
      * Cancel the subscription that corresponds to the specified request.
@@ -74,7 +80,10 @@ let Mapper = class Mapper extends Class.Null {
     async cancel(request) {
         this.lastPayload = void 0;
         const answer = await this.mapper.insertEx(Requests.Cancel, request);
-        return answer.responseCode === 0;
+        if (answer !== void 0) {
+            return answer.responseCode === 0;
+        }
+        return false;
     }
 };
 __decorate([

@@ -79,7 +79,7 @@ export class Mapper extends Class.Null {
   @Class.Public()
   public async create(request: Requests.Create): Promise<string> {
     this.lastPayload = void 0;
-    const answer = await this.mapper.insertEx(Requests.Create, request);
+    const answer = (await this.mapper.insertEx<Requests.Create, { formToken: string }>(Requests.Create, request))!;
     if (answer.formToken === void 0) {
       const entity = RestDB.Outputer.createFull(Payments.Entity, answer, [])!;
       return this.updatePayload(<any>entity.transactions[0], true)?.paymentMethodToken!;
@@ -96,7 +96,7 @@ export class Mapper extends Class.Null {
   @Class.Public()
   public async from(request: Requests.Transaction): Promise<string> {
     this.lastPayload = void 0;
-    const answer = await this.mapper.insertEx(Requests.Transaction, request);
+    const answer = (await this.mapper.insertEx<Requests.Transaction, Entity>(Requests.Transaction, request))!;
     const entity = RestDB.Outputer.createFull(Entity, answer, [])!;
     return this.updatePayload(entity, true)?.paymentMethodToken!;
   }
@@ -109,9 +109,12 @@ export class Mapper extends Class.Null {
   @Class.Public()
   public async load(request: Requests.Get): Promise<Entity | undefined> {
     this.lastPayload = void 0;
-    const answer = await this.mapper.insertEx(Requests.Get, request);
-    const entity = RestDB.Outputer.createFull(Entity, answer, []);
-    return this.updatePayload(entity);
+    const answer = await this.mapper.insertEx<Requests.Get, Entity>(Requests.Get, request);
+    if (answer !== void 0) {
+      const entity = RestDB.Outputer.createFull(Entity, answer, []);
+      return this.updatePayload(entity);
+    }
+    return void 0;
   }
 
   /**
@@ -122,8 +125,11 @@ export class Mapper extends Class.Null {
   @Class.Public()
   public async cancel(request: Requests.Cancel): Promise<boolean> {
     this.lastPayload = void 0;
-    const answer = await this.mapper.insertEx(Requests.Cancel, request);
-    return answer.responseCode === 0;
+    const answer = await this.mapper.insertEx<Requests.Cancel, { responseCode: number }>(Requests.Cancel, request);
+    if (answer !== void 0) {
+      return answer.responseCode === 0;
+    }
+    return false;
   }
 
   /**
@@ -134,7 +140,10 @@ export class Mapper extends Class.Null {
   @Class.Public()
   public async reactivate(request: Requests.Reactivate): Promise<boolean> {
     this.lastPayload = void 0;
-    const answer = await this.mapper.insertEx(Requests.Reactivate, request);
-    return answer.responseCode === 0;
+    const answer = await this.mapper.insertEx<Requests.Reactivate, { responseCode: number }>(Requests.Reactivate, request);
+    if (answer !== void 0) {
+      return answer.responseCode === 0;
+    }
+    return false;
   }
 }

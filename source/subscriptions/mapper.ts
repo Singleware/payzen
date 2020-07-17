@@ -54,7 +54,7 @@ export class Mapper extends Class.Null {
   @Class.Public()
   public async create(request: Requests.Create): Promise<string> {
     this.lastPayload = void 0;
-    const answer = await this.mapper.insertEx(Requests.Create, request);
+    const answer = (await this.mapper.insertEx<Requests.Create, { subscriptionId: string }>(Requests.Create, request))!;
     return answer.subscriptionId;
   }
 
@@ -66,9 +66,12 @@ export class Mapper extends Class.Null {
   @Class.Public()
   public async load(request: Requests.Get): Promise<Entity | undefined> {
     this.lastPayload = void 0;
-    const answer = await this.mapper.insertEx(Requests.Get, request);
-    this.lastPayload = RestDB.Outputer.createFull(Entity, answer, []);
-    return this.lastPayload;
+    const answer = await this.mapper.insertEx<Requests.Get, Entity>(Requests.Get, request);
+    if (answer !== void 0) {
+      this.lastPayload = RestDB.Outputer.createFull(Entity, answer, []);
+      return this.lastPayload;
+    }
+    return void 0;
   }
 
   /**
@@ -79,8 +82,11 @@ export class Mapper extends Class.Null {
   @Class.Public()
   public async modify(request: Requests.Update): Promise<boolean> {
     this.lastPayload = void 0;
-    const answer = await this.mapper.insertEx(Requests.Update, request);
-    return answer.responseCode === 0;
+    const answer = await this.mapper.insertEx<Requests.Update, { responseCode: number }>(Requests.Update, request);
+    if (answer !== void 0) {
+      return answer.responseCode === 0;
+    }
+    return false;
   }
 
   /**
@@ -91,7 +97,10 @@ export class Mapper extends Class.Null {
   @Class.Public()
   public async cancel(request: Requests.Cancel): Promise<boolean> {
     this.lastPayload = void 0;
-    const answer = await this.mapper.insertEx(Requests.Cancel, request);
-    return answer.responseCode === 0;
+    const answer = await this.mapper.insertEx<Requests.Cancel, { responseCode: number }>(Requests.Cancel, request);
+    if (answer !== void 0) {
+      return answer.responseCode === 0;
+    }
+    return false;
   }
 }

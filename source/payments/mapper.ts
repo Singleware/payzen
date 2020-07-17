@@ -79,7 +79,7 @@ export class Mapper extends Class.Null {
   @Class.Public()
   public async create(request: Requests.Create): Promise<string> {
     this.lastPayload = void 0;
-    const answer = await this.mapper.insertEx(Requests.Create, request);
+    const answer = (await this.mapper.insertEx<Requests.Create, { formToken?: string }>(Requests.Create, request))!;
     if (answer.formToken === void 0) {
       const entity = RestDB.Outputer.createFull(Entity, answer, [])!;
       return this.updatePayload(entity.transactions[0], true)?.uuid!;

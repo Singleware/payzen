@@ -14,7 +14,7 @@ export declare class Client extends RestDB.Driver {
      * @returns Returns the insert result.
      * @throws Throws an error when the server response is invalid.
      */
-    protected getInsertResponse<T>(model: RestDB.Model, response: RestDB.Responses.Output): T;
+    protected getInsertResponse<R>(model: RestDB.Model, response: RestDB.Responses.Output): R | undefined;
     /**
      * Get the request query string based on the specified entity model, filters and fields.
      * @param model Entity model.

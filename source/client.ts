@@ -26,7 +26,7 @@ export class Client extends RestDB.Driver {
    * @throws Throws an error when the server response is invalid.
    */
   @Class.Protected()
-  protected getInsertResponse<T>(model: RestDB.Model, response: RestDB.Responses.Output): T {
+  protected getInsertResponse<R>(model: RestDB.Model, response: RestDB.Responses.Output): R | undefined {
     this.lastPayload = response.payload;
     if (response.status.code !== 200) {
       throw new Error(`Unexpected insert(${response.input.method}) response status: ${response.status.code}`);

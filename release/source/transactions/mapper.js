@@ -65,8 +65,11 @@ let Mapper = class Mapper extends Class.Null {
     async load(request) {
         this.lastPayload = void 0;
         const answer = await this.mapper.insertEx(Requests.Get, request);
-        const entity = RestDB.Outputer.createFull(entity_1.Entity, answer, []);
-        return this.updatePayload(entity);
+        if (answer !== void 0) {
+            const entity = RestDB.Outputer.createFull(entity_1.Entity, answer, []);
+            return this.updatePayload(entity);
+        }
+        return void 0;
     }
     /**
      * Update the transaction that corresponds to the specified request.
@@ -76,9 +79,12 @@ let Mapper = class Mapper extends Class.Null {
     async modify(request) {
         this.lastPayload = void 0;
         const answer = await this.mapper.insertEx(Requests.Update, request);
-        const entity = RestDB.Outputer.createFull(entity_1.Entity, answer, []);
-        this.updatePayload(entity);
-        return true;
+        if (answer !== void 0) {
+            const entity = RestDB.Outputer.createFull(entity_1.Entity, answer, []);
+            this.updatePayload(entity);
+            return true;
+        }
+        return false;
     }
     /**
      * Capture all transactions that corresponds to the specified request.
@@ -88,7 +94,10 @@ let Mapper = class Mapper extends Class.Null {
     async capture(request) {
         this.lastPayload = void 0;
         const answer = await this.mapper.insertEx(Requests.Capture, request);
-        return answer.responseCode === 0;
+        if (answer !== void 0) {
+            return answer.responseCode === 0;
+        }
+        return false;
     }
     /**
      * Validate the transaction that corresponds to the specified request.
@@ -99,9 +108,12 @@ let Mapper = class Mapper extends Class.Null {
     async validate(request) {
         this.lastPayload = void 0;
         const answer = await this.mapper.insertEx(Requests.Validate, request);
-        const entity = RestDB.Outputer.createFull(entity_1.Entity, answer, []);
-        this.updatePayload(entity);
-        return true;
+        if (answer !== void 0) {
+            const entity = RestDB.Outputer.createFull(entity_1.Entity, answer, []);
+            this.updatePayload(entity);
+            return true;
+        }
+        return false;
     }
     /**
      * Cancel the transaction that corresponds to the specified request.
@@ -115,9 +127,12 @@ let Mapper = class Mapper extends Class.Null {
             ...request,
             resolutionMode: Types.Resolution.CancellationOnly
         });
-        const entity = RestDB.Outputer.createFull(entity_1.Entity, answer, []);
-        this.updatePayload(entity, true);
-        return true;
+        if (answer !== void 0) {
+            const entity = RestDB.Outputer.createFull(entity_1.Entity, answer, []);
+            this.updatePayload(entity, true);
+            return true;
+        }
+        return false;
     }
     /**
      * Refund the transaction that corresponds to the specified request.
@@ -131,9 +146,12 @@ let Mapper = class Mapper extends Class.Null {
             ...request,
             resolutionMode: Types.Resolution.RefundOnly
         });
-        const entity = RestDB.Outputer.createFull(entity_1.Entity, answer, []);
-        this.updatePayload(entity, true);
-        return true;
+        if (answer !== void 0) {
+            const entity = RestDB.Outputer.createFull(entity_1.Entity, answer, []);
+            this.updatePayload(entity, true);
+            return true;
+        }
+        return false;
     }
     /**
      * Cancel or Refund the transaction that corresponds to the specified request.
@@ -144,9 +162,12 @@ let Mapper = class Mapper extends Class.Null {
     async rollback(request) {
         this.lastPayload = void 0;
         const answer = await this.mapper.insertEx(Requests.Rollback, request);
-        const entity = RestDB.Outputer.createFull(entity_1.Entity, answer, []);
-        this.updatePayload(entity, true);
-        return true;
+        if (answer !== void 0) {
+            const entity = RestDB.Outputer.createFull(entity_1.Entity, answer, []);
+            this.updatePayload(entity, true);
+            return true;
+        }
+        return false;
     }
     /**
      * Duplicate the transaction that corresponds to the specified request.
@@ -156,9 +177,12 @@ let Mapper = class Mapper extends Class.Null {
     async duplicate(request) {
         this.lastPayload = void 0;
         const answer = await this.mapper.insertEx(Requests.Duplicate, request);
-        const entity = RestDB.Outputer.createFull(entity_1.Entity, answer, []);
-        this.updatePayload(entity, true);
-        return true;
+        if (answer !== void 0) {
+            const entity = RestDB.Outputer.createFull(entity_1.Entity, answer, []);
+            this.updatePayload(entity, true);
+            return true;
+        }
+        return false;
     }
 };
 __decorate([

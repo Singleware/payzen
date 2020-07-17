@@ -53,8 +53,11 @@ export class Mapper extends Class.Null {
   @Class.Public()
   public async load(request: Requests.Get): Promise<Entity | undefined> {
     this.lastPayload = void 0;
-    const answer = await this.mapper.insertEx(Requests.Get, request);
-    this.lastPayload = RestDB.Outputer.createFull(Entity, answer, []);
-    return this.lastPayload;
+    const answer = await this.mapper.insertEx<Requests.Get, Entity>(Requests.Get, request);
+    if (answer !== void 0) {
+      this.lastPayload = RestDB.Outputer.createFull(Entity, answer, []);
+      return this.lastPayload;
+    }
+    return void 0;
   }
 }

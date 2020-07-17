@@ -42,8 +42,11 @@ let Mapper = class Mapper extends Class.Null {
     async load(request) {
         this.lastPayload = void 0;
         const answer = await this.mapper.insertEx(Requests.Get, request);
-        this.lastPayload = RestDB.Outputer.createFull(entity_1.Entity, answer, []);
-        return this.lastPayload;
+        if (answer !== void 0) {
+            this.lastPayload = RestDB.Outputer.createFull(entity_1.Entity, answer, []);
+            return this.lastPayload;
+        }
+        return void 0;
     }
 };
 __decorate([

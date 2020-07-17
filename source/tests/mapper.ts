@@ -38,7 +38,7 @@ export class Mapper extends Class.Null {
    */
   @Class.Public()
   public async send(request: Requests.Send): Promise<boolean> {
-    const answer = await this.mapper.insertEx(Requests.Send, request);
+    const answer = (await this.mapper.insertEx<Requests.Send, { value: string }>(Requests.Send, request))!;
     return answer.value === request.value;
   }
 }

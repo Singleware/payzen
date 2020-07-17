@@ -34,7 +34,7 @@ let Mapper = class Mapper extends Class.Null {
      * @returns Returns a promise to get true when the test response is valid, false otherwise.
      */
     async send(request) {
-        const answer = await this.mapper.insertEx(Requests.Send, request);
+        const answer = (await this.mapper.insertEx(Requests.Send, request));
         return answer.value === request.value;
     }
 };
